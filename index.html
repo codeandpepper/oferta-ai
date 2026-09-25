@@ -4,37 +4,40 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Oferta AI — Workspace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="topbar">
     <div class="topbar-inner">
-      <span class="logo">Oferta AI</span>
+      <span class="logo">Oferta <span class="logo-accent">AI</span></span>
       <span class="subtitle">workspace zespołu</span>
     </div>
   </header>
 
-  <main class="container">
+  <div class="layout">
 
-    <section class="card" id="main-section">
+    <aside class="sidebar sidebar-left card" id="links-section">
+      <h2>Linki</h2>
+      <div id="links-content" class="markdown-body">Ładowanie…</div>
+    </aside>
+
+    <section class="center card" id="main-section">
       <h2>Główne założenia</h2>
       <div id="main-content" class="markdown-body">Ładowanie…</div>
     </section>
 
-    <section class="card" id="links-section">
-      <h2>Linki</h2>
-      <div id="links-content" class="markdown-body">Ładowanie…</div>
-    </section>
-
-    <section class="card" id="files-section">
+    <aside class="sidebar sidebar-right card" id="files-section">
       <div class="files-header">
         <h2>Pliki źródłowe</h2>
         <nav id="breadcrumbs" class="breadcrumbs"></nav>
       </div>
-      <div id="files-grid" class="files-grid">Ładowanie…</div>
-    </section>
+      <div id="files-grid" class="files-list">Ładowanie…</div>
+    </aside>
 
-  </main>
+  </div>
 
   <div id="preview-overlay" class="overlay hidden">
     <div class="preview-panel">

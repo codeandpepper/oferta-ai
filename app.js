@@ -74,19 +74,19 @@ function renderBreadcrumbs(path) {
 }
 
 function renderFileCard(item) {
-  const card = document.createElement("div");
-  card.className = "file-card";
+  const row = document.createElement("div");
+  row.className = "file-row";
   const iconKey = item.type === "dir" ? "dir" : ext(item.name);
   const icon = ICONS[iconKey] || "📦";
-  card.innerHTML = `<span class="file-icon">${icon}</span><span class="file-name">${item.name}</span>`;
-  card.onclick = () => {
+  row.innerHTML = `<span class="file-icon">${icon}</span><span class="file-name" title="${item.name}">${item.name}</span>`;
+  row.onclick = () => {
     if (item.type === "dir") {
       loadFiles(item.path);
     } else {
       openPreview(item);
     }
   };
-  return card;
+  return row;
 }
 
 function openPreview(item) {
