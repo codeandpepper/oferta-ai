@@ -1,10 +1,52 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <title>Hello World</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oferta AI — Workspace</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Hello World</h1>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <span class="logo">Oferta AI</span>
+      <span class="subtitle">workspace zespołu</span>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section class="card" id="main-section">
+      <h2>Główne założenia</h2>
+      <div id="main-content" class="markdown-body">Ładowanie…</div>
+    </section>
+
+    <section class="card" id="links-section">
+      <h2>Linki</h2>
+      <div id="links-content" class="markdown-body">Ładowanie…</div>
+    </section>
+
+    <section class="card" id="files-section">
+      <div class="files-header">
+        <h2>Pliki źródłowe</h2>
+        <nav id="breadcrumbs" class="breadcrumbs"></nav>
+      </div>
+      <div id="files-grid" class="files-grid">Ładowanie…</div>
+    </section>
+
+  </main>
+
+  <div id="preview-overlay" class="overlay hidden">
+    <div class="preview-panel">
+      <div class="preview-header">
+        <span id="preview-title"></span>
+        <button id="preview-close" class="close-btn">✕</button>
+      </div>
+      <div id="preview-body" class="preview-body"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
