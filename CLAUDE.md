@@ -5,6 +5,18 @@ kontekstu pod projekt "oferta AI". Kilka osób pracuje tu równolegle na
 swoich Claude Code, każdy push trafia na `main` i od razu widać zmiany na
 stronie.
 
+## TWARDE ZASADY — STOSUJ ZAWSZE PRZY KOMMITOWANIU
+
+- WYMUŚ prefiks w KAŻDYM commit message: `add:` / `update:` / `research:`
+  (szczegóły formatu niżej w "Praca zespołowa — jak pushujemy"). Commit
+  BEZ prefiksu jest niepoprawny — popraw go zanim zrobisz push.
+- NIGDY nie wklejaj surowej treści źródeł do `main.md`. `main.md` = TYLKO
+  podsumowanie.
+- ZAWSZE nowa wiedza/research/link/plik → NOWY plik w `pliki/`. NIE
+  nadpisuj i NIE dopisuj do istniejących plików źródłowych.
+- NIGDY nie commituj surowego transkryptu czatu — commituj tylko gotowy
+  efekt pracy (plik z research/streszczeniem, aktualizacja `main.md`).
+
 ## Struktura
 
 - `main.md` — **tylko podsumowanie**. Krótkie, wysokopoziomowe streszczenie
@@ -76,11 +88,13 @@ Prefiks daty ułatwia sortowanie i widać od razu co jest świeże.
 - **Limitów rozmiaru/typu plików na razie nie ma** — wrzucaj co potrzeba.
   Jeśli repo zacznie się robić ciężkie (duże wideo, dziesiątki MB PDF-ów),
   wróćmy do tego i ustalmy limit wtedy.
-- **Commit message z prefiksem**, żeby dało się przeskanować historię bez
-  otwierania każdego commita:
+- **WYMAGANY prefiks w commit message** — bez wyjątków, żeby dało się
+  przeskanować historię bez otwierania każdego commita:
   - `add: <co dodano>` — nowy plik/link/źródło, np.
     `add: pliki/2026-09-25-konkurent-x-cennik.md`
   - `update: <co zaktualizowano>` — zmiana istniejącego pliku, np.
     `update: main.md — nowy punkt o grupie docelowej`
   - `research: <co>` — commit będący wynikiem researchu/analizy Claude,
     jeśli warto to odróżnić od ręcznego wrzucenia pliku przez człowieka
+  - PRZED każdym `git commit` SPRAWDŹ, czy message zaczyna się od
+    jednego z tych trzech prefiksów. Jeśli nie — popraw przed commitem.
