@@ -185,8 +185,8 @@ publiczne.
   powtórnymi awariami w ostatnim kwartale). Scenariusz i dane projektuj
   razem.
 - **Dokumentacja:** publiczne instrukcje w `public/docs/`, metadane (link
-  źródłowy, data pobrania) w `data/seed/docs.json`. **PDF-y nie są w gicie**
-  (repo jest publiczne) — po sklonowaniu uruchom `npm run seed:fetch-docs`. Obecnie: FOGO
+  źródłowy, data pobrania) w `data/seed/docs.json`. `npm run seed:fetch-docs`
+  pobiera je ponownie ze źródeł, jeśli trzeba je odświeżyć. Obecnie: FOGO
   (agregaty FV 10001 ER / FV 15540 ER, tabela usterek str. 22) i Grundfos
   MAGNA3 (PL, kody alarmów str. 52). Transformatory (fikcyjne) nie mają DTR.
 - **Scenariusz demo opiera się na AG-003** (FOGO FV 15540 ER, PEC Borówiec):
