@@ -1,0 +1,43 @@
+[
+  {
+    "id": "fogo-agregaty",
+    "title": "FOGO — Agregaty prądotwórcze przenośne, instrukcja obsługi (FH/FV, m.in. FV 10001 ER, FV 15540 ER)",
+    "deviceType": "agregat",
+    "models": [
+      "FV 10001 ER",
+      "FV 15540 ER"
+    ],
+    "file": "/docs/fogo-agregaty-przenosne.pdf",
+    "pages": [
+      1,
+      32
+    ],
+    "sourceUrl": "https://elektroinstal.poznan.pl/wp-content/uploads/2019/02/FOGO-instrukcja.pdf",
+    "retrievedAt": "2026-10-07",
+    "pageHints": {
+      "20": "Harmonogram przeglądów i czynności serwisowych (olej, filtr powietrza, świeca).",
+      "22": "TABELA USTEREK: usterka, przyczyna, sposób naprawy. Silnik nie uruchamia się (niski poziom paliwa, zanieczyszczone paliwo, filtr powietrza), silnik pracuje nierównomiernie, brak wzbudzenia, za niskie / za wysokie napięcie, drgania, hałas prądnicy."
+    }
+  },
+  {
+    "id": "grundfos-magna3",
+    "title": "Grundfos MAGNA3 — Instrukcja montażu i eksploatacji (PL)",
+    "deviceType": "pompa",
+    "models": [
+      "MAGNA3 32-120 F",
+      "MAGNA3 40-180 F",
+      "MAGNA3 65-150 F"
+    ],
+    "file": "/docs/grundfos-magna3.pdf",
+    "pages": [
+      2,
+      63
+    ],
+    "sourceUrl": "https://home.agh.edu.pl/~siwek/PompySprezarkiWentylatory_2017/Laboratorium/Badnie%20pomp%20obiegowych/Grundfosliterature-5995031.pdf",
+    "retrievedAt": "2026-10-07",
+    "pageHints": {
+      "52": "TABELA WYKRYWANIA USTEREK: kody ostrzeżeń i alarmów (10, 29, 40, 51 pompa zablokowana, 64, 72, 74, 77, 84, 88 błąd przetwornika, 93), przyczyny i rozwiązania.",
+      "18": "Tabliczka znamionowa pompy: model, numer seryjny, kod daty produkcji."
+    }
+  }
+]

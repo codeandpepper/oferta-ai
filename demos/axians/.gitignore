@@ -1,0 +1,6 @@
+node_modules/
+dist/
+.env
+.model-cache/
+# third-party manuals: not republished in this public repo — fetch with `npm run seed:fetch-docs`
+public/docs/*.pdf

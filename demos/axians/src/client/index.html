@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wiedza serwisowa — demo</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand"><span class="logo">◆</span> Wiedza serwisowa <span class="muted">demo</span></div>
+      <nav class="tabs" role="tablist">
+        <button role="tab" data-tab="technik" aria-selected="true">Technik</button>
+        <button role="tab" data-tab="kierownik" aria-selected="false">Kierownik serwisu</button>
+      </nav>
+      <div class="actions">
+        <button id="hints" class="ghost small" aria-pressed="true" title="Pokaż / ukryj objaśnienia przy elementach">ⓘ Objaśnienia</button>
+        <button id="reset" class="ghost small" title="Przywróć dane startowe">Reset demo</button>
+      </div>
+    </header>
+    <main>
+      <section id="technik" class="view"></section>
+      <section id="kierownik" class="view" hidden></section>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+{
+  "name": "axians-demo",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "dev": "concurrently -k -n api,web \"node --watch --env-file-if-exists=.env src/server/index.ts\" \"vite\"",
+    "build": "vite build",
+    "start": "node src/server/index.ts",
+    "typecheck": "tsc --noEmit",
+    "seed:tickets": "node scripts/generate-tickets.ts",
+    "seed:docs": "node scripts/ingest-docs.ts",
+    "eval:retrieval": "node scripts/eval-retrieval.ts",
+    "heroku-postbuild": "npm run build",
+    "deploy": "bash scripts/deploy-heroku.sh",
+    "seed:fetch-docs": "node scripts/fetch-docs.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.131.0",
+    "@cursor/sdk": "^1.0.37",
+    "@hono/node-server": "^2.1.3",
+    "chart.js": "^4.5.1",
+    "hono": "^4.13.13",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "concurrently": "^10.0.5",
+    "typescript": "^7.0.2",
+    "unpdf": "^1.8.1",
+    "vite": "^8.3.3"
+  }
+}
