@@ -1,14 +1,28 @@
 // Technician view: device → problem (multi-source answer) → closing protocol → ask again.
-import { api, type Answer, type Device, type Protocol, type Ref } from "./api.ts";
+import { api, type Answer, type Device, type Protocol, type Ref, type Weather, type WeatherOpts } from "./api.ts";
 import { h, fmtDate, errorBox, hint } from "./dom.ts";
 import { micButton } from "./recorder.ts";
 import { samplePlate } from "./plate.ts";
 
 const SAMPLE_PROBLEM = "Agregat nie startuje, kontrolka paliwa miga, wczoraj padało.";
-const SAMPLE_NOTE =
-  "no więc tak, w odstojniku była woda, spuściłem, filtr paliwa wymieniony, korek wlewu też bo uszczelka pękła, kostkę czujnika paliwa wymieniłem na tą nową uszczelnioną co zalecali w marcu, odpalił za drugim razem, test pół godziny pod obciążeniem ok, zeszło mi jakieś półtorej godziny";
+// Sample closing notes for the AG-003 scenario — from messy to complete.
+const SAMPLE_NOTES: { label: string; text: string }[] = [
+  {
+    label: "Chaotyczna",
+    text: "no więc tak, w odstojniku była woda, spuściłem, filtr paliwa wymieniony, korek wlewu też bo uszczelka pękła, kostkę czujnika paliwa wymieniłem na tą nową uszczelnioną co zalecali w marcu, odpalił za drugim razem, test pół godziny pod obciążeniem ok, zeszło mi jakieś półtorej godziny",
+  },
+  {
+    label: "Kompletna",
+    text: "Zgłoszenie: agregat nie uruchamiał się, migała kontrolka paliwa. Przyczyna: woda w paliwie przez pękniętą uszczelkę korka wlewu. Spuściłem około pół litra wody z odstojnika, wymieniłem całe paliwo, filtr paliwa FG-FP-15540, korek wlewu FG-KW-01 i złącze czujnika poziomu paliwa FG-ZL-CZP, zgodnie z zaleceniem z marca. Akumulator 12,7 V, w porządku. Rozruch za pierwszym razem, test pod obciążeniem 30 minut: 230 V, 50 Hz, bez uwag. Czas pracy godzina czterdzieści. Zalecam zadaszenie agregatu i kontrolę odstojnika po większych opadach. Następny przegląd zgodnie z planem 12 marca 2027.",
+  },
+  {
+    label: "Zbyt krótka",
+    text: "wym. filtr, ok",
+  },
+];
 
 const KIND: Record<Answer["sections"][number]["kind"], { label: string; cls: string; how: string }> = {
+  pogoda: { label: "Warunki pogodowe", cls: "k-weather", how: "Pogoda z ostatniego tygodnia w miejscu urządzenia, zestawiona z historią awarii — np. opady i wilgoć sprzyjają zawilgoceniu paliwa i złączy." },
   historia_typ: { label: "Historia zgłoszeń — ten typ", cls: "k-type", how: "Wyszukiwanie w notatkach techników (odporne na skróty i literówki) + zapytanie strukturalne: ile podobnych przypadków, jakie przyczyny, średni czas naprawy." },
   historia_egzemplarz: { label: "Historia — ten egzemplarz", cls: "k-unit", how: "Zapytanie strukturalne po ID urządzenia: ostatnie wizyty, uwagi i zalecenia techników." },
   dokumentacja: { label: "Dokumentacja (DTR)", cls: "k-doc", how: "Przeszukiwanie instrukcji producenta — cytat z numerem strony; odnośnik otwiera dokument na tej stronie." },
@@ -20,6 +34,66 @@ export async function mountTechnik(root: HTMLElement) {
   let device: Device | null = null;
   let lastQuestion = "";
   let lastAnswer: Answer | null = null;
+
+  // ---- weather: device location by default, optional GPS, demo mode for a predictable live show
+  let gps: { lat: number; lon: number } | null = null;
+  let demoWeather = false;
+  try { demoWeather = localStorage.getItem("demoWeather") === "1"; } catch { /* storage unavailable */ }
+  const weatherOpts = (): WeatherOpts => (gps ? { ...gps, label: "Twoja lokalizacja (GPS)", demo: demoWeather } : { demo: demoWeather });
+  const weatherBox = h("div", { class: "weather" });
+
+  async function loadWeather() {
+    if (!device) return;
+    weatherBox.replaceChildren(h("div", { class: "working" }, "Pobieram pogodę z ostatnich 7 dni…"));
+    try {
+      weatherBox.replaceChildren(renderWeather(await api.weather(device.id, weatherOpts())));
+    } catch (e) {
+      weatherBox.replaceChildren(errorBox(e));
+    }
+  }
+
+  function renderWeather(w: Weather) {
+    const s = w.summary;
+    const maxP = Math.max(5, ...w.days.map((d) => d.precipitationMm));
+    const gpsBtn = h("button", { type: "button", class: "chip", title: "Pogoda dla miejsca, w którym jesteś (zgoda przeglądarki)" }, gps ? "📍 Lokalizacja urządzenia" : "📍 Moja lokalizacja");
+    gpsBtn.addEventListener("click", () => {
+      if (gps) { gps = null; loadWeather(); return; }
+      navigator.geolocation.getCurrentPosition(
+        (p) => { gps = { lat: p.coords.latitude, lon: p.coords.longitude }; loadWeather(); },
+        (e) => weatherBox.append(errorBox(`Brak dostępu do lokalizacji: ${e.message}`)),
+        { timeout: 10000 },
+      );
+    });
+    const demoToggle = h("label", { class: "toggle", title: "Zapisany deszczowy tydzień — przewidywalny przebieg pokazu" }, h("input", { type: "checkbox", checked: demoWeather }), "Tryb demo");
+    demoToggle.querySelector("input")!.addEventListener("change", (e) => {
+      demoWeather = (e.target as HTMLInputElement).checked;
+      try { localStorage.setItem("demoWeather", demoWeather ? "1" : "0"); } catch { /* ignore */ }
+      loadWeather();
+    });
+    return h("div", { class: "weather-card" },
+      h("div", { class: "weather-head" },
+        h("strong", {}, "🌦 Warunki — ostatnie 7 dni"),
+        h("span", { class: "muted" }, ` · ${w.label}`),
+        w.demo ? h("span", { class: "demo-badge" }, "DEMO") : null,
+      ),
+      hint("System sam pobiera pogodę z ostatniego tygodnia dla miejsca, w którym stoi urządzenie.",
+        "AI zestawia warunki z historią awarii — np. opady i wysoka wilgotność wzmacniają hipotezę o wodzie w paliwie, mróz o problemach z akumulatorem."),
+      h("div", { class: "weather-stats" },
+        stat("Opady", `${s.precipitationMm} mm`, `${s.rainyDays} dni z deszczem`),
+        stat("Temperatura", `${s.tMin}…${s.tMax} °C`, s.frostDays ? `${s.frostDays} dni z mrozem` : "bez mrozu"),
+        stat("Wilgotność", `${s.avgHumidity}%`, "średnio"),
+        stat("Wiatr", `${s.maxGustKmh} km/h`, "max porywy"),
+      ),
+      h("div", { class: "rain-bars", "aria-label": "Opady dzienne" },
+        ...w.days.map((d) => h("div", { class: "rain-day", title: `${d.date}: ${d.precipitationMm} mm, ${d.tMin}…${d.tMax} °C` },
+          h("div", { class: "rain-bar", style: `height:${Math.max(2, (d.precipitationMm / maxP) * 100)}%` }),
+          h("span", {}, new Date(d.date).toLocaleDateString("pl-PL", { weekday: "short" })),
+        )),
+      ),
+      h("div", { class: "row wrap weather-actions" }, gpsBtn, demoToggle, h("span", { class: "muted source" }, w.source)),
+    );
+  }
+  const stat = (k: string, v: string, sub: string) => h("div", { class: "stat" }, h("span", { class: "k" }, k), h("strong", {}, v), h("span", { class: "muted" }, sub));
 
   // ---- step 1: device ---------------------------------------------------------
   const deviceInfo = h("div", { class: "device-info" });
@@ -57,7 +131,8 @@ export async function mountTechnik(root: HTMLElement) {
     device = d;
     problemCard.hidden = !d;
     closeCard.hidden = true;
-    if (!d) { deviceInfo.replaceChildren(); return; }
+    if (!d) { deviceInfo.replaceChildren(); weatherBox.replaceChildren(); return; }
+    loadWeather();
     const history = await api.deviceTickets(d.id);
     deviceInfo.replaceChildren(
       h("dl", { class: "kv" },
@@ -88,6 +163,7 @@ export async function mountTechnik(root: HTMLElement) {
     fileInput,
     select,
     deviceStatus,
+    weatherBox,
     deviceInfo,
   );
 
@@ -105,7 +181,7 @@ export async function mountTechnik(root: HTMLElement) {
     progress.replaceChildren(h("li", { class: "working" }, "Analizuję pytanie i wybieram źródła…"));
     answerBox.replaceChildren();
     try {
-      for await (const ev of api.ask(device.id, q)) {
+      for await (const ev of api.ask(device.id, q, weatherOpts())) {
         if (ev.type === "tool") {
           progress.lastElementChild?.classList.contains("working") && progress.lastElementChild.remove();
           progress.append(h("li", { class: "done" }, `✓ ${ev.label}`, h("span", { class: "muted" }, ` · ${ev.resultCount} wyn.`)));
@@ -208,7 +284,9 @@ export async function mountTechnik(root: HTMLElement) {
       h("div", { class: "wo-head" }, h("span", {}, "Zlecenie serwisowe — protokół"), h("span", { class: `prio prio-${p.priority}` }, p.priority)),
       h("div", { class: "wo-meta mono" }, `${device!.id} · ${device!.manufacturer} ${device!.model} · SN ${device!.serial} · kat. ${p.category}`),
       ...Object.values(f).map((x) => x.el),
-      p.missing.length ? h("div", { class: "missing" }, h("strong", {}, "Do uzupełnienia: "), p.missing.join("; ")) : null,
+      p.missing.length
+        ? h("div", { class: "missing" }, h("strong", {}, "Do uzupełnienia: "), h("ul", {}, ...p.missing.map((m) => h("li", {}, m))))
+        : h("div", { class: "complete" }, "✓ Protokół kompletny — nic do uzupełnienia"),
       hint("Zapis tworzy nowe zgłoszenie w historii (u klienta: zlecenie w SAP FSM / ServiceNow).",
         "Od tej chwili asystent bierze je pod uwagę przy kolejnych pytaniach — wiedza rośnie z każdą interwencją, bez kosztownego trenowania AI."),
       saveBtn,
@@ -223,8 +301,11 @@ export async function mountTechnik(root: HTMLElement) {
     note,
     h("div", { class: "row" },
       micButton((t) => (note.value = t), (e) => protoBox.replaceChildren(errorBox(e))),
-      h("button", { type: "button", class: "chip", onclick: () => (note.value = SAMPLE_NOTE) }, "Przykład"),
       protoBtn,
+    ),
+    h("div", { class: "row wrap" },
+      h("span", { class: "muted small-label" }, "Przykłady:"),
+      ...SAMPLE_NOTES.map((s) => h("button", { type: "button", class: "chip", title: s.text, onclick: () => (note.value = s.text) }, s.label)),
     ),
     protoBox,
   );
@@ -236,6 +317,7 @@ function renderAnswer(a: Answer, refs: Record<string, Ref>) {
   const refChip = (id: string) => {
     const r = refs[id];
     if (!r) return null;
+    if (r.kind === "pogoda") return h("details", { class: "ref" }, h("summary", {}, "🌦 ", r.label), h("pre", {}, r.detail));
     if (r.kind === "dokumentacja") return h("a", { class: "ref ref-doc", href: r.url, target: "_blank", title: r.detail }, `📄 ${r.label}`);
     const d = h("details", { class: `ref ${r.isNew ? "ref-new" : ""}` },
       h("summary", {}, r.isNew ? h("b", {}, "NOWE ") : null, r.kind === "czesc" ? "🔩 " : "🗂 ", r.label),

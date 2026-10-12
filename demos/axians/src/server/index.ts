@@ -9,6 +9,7 @@ import { draftProtocol, Protocol } from "./flows/protocol.ts";
 import { identify } from "./flows/identify.ts";
 import { managerQuery } from "./flows/manager.ts";
 import { transcribe } from "./stt.ts";
+import { getWeather } from "./sources/weather.ts";
 import { RefusalError } from "./claude.ts";
 import { passwordGate } from "./auth.ts";
 
@@ -34,6 +35,15 @@ app.get("/api/devices/:id/tickets", (c) =>
   c.json(tickets.filter((t) => t.deviceId === c.req.param("id")).sort((a, b) => b.openedAt.localeCompare(a.openedAt))),
 );
 
+app.get("/api/weather", async (c) => {
+  const d = deviceById(c.req.query("deviceId") ?? "");
+  const lat = Number(c.req.query("lat") ?? d?.lat);
+  const lon = Number(c.req.query("lon") ?? d?.lon);
+  if (!Number.isFinite(lat) || !Number.isFinite(lon)) return c.json({ error: "Brak lokalizacji" }, 400);
+  const label = c.req.query("label") ?? d?.location ?? "Twoja lokalizacja";
+  return c.json(await getWeather({ lat, lon, label, demo: c.req.query("demo") === "1" }));
+});
+
 app.post("/api/stt", async (c) => {
   const body = await c.req.parseBody();
   const file = body.audio;
@@ -51,10 +61,10 @@ app.post("/api/identify", async (c) => {
 });
 
 app.post("/api/ask", async (c) => {
-  const { deviceId, question } = await c.req.json<{ deviceId: string; question: string }>();
+  const { deviceId, question, weather } = await c.req.json<{ deviceId: string; question: string; weather?: { lat?: number; lon?: number; label?: string; demo?: boolean } }>();
   return streamSSE(c, async (stream) => {
     try {
-      for await (const event of ask(deviceId, question)) await stream.writeSSE({ data: JSON.stringify(event) });
+      for await (const event of ask(deviceId, question, weather)) await stream.writeSSE({ data: JSON.stringify(event) });
     } catch (e) {
       console.error(e);
       await stream.writeSSE({ data: JSON.stringify({ type: "error", message: e instanceof Error ? e.message : String(e) }) });

@@ -108,6 +108,7 @@ Uzasadnienie i źródła: `docs/2026-10-07-axians-demo-stack-research.md`.
 | Wyszukiwanie w tekście | Własny `src/server/search.ts`: TF-IDF na trigramach znakowych + normalizacja (bez ogonków, rozwijanie skrótów techników) | **Bez embeddingów.** Test 2026-10-07: `multilingual-e5-small` źle rankował notatki i zajmował ~925 MB RAM. Część „semantyczną” robi Claude: pisze zapytanie z synonimami/skrótami i ocenia kandydatów. Jakość sprawdza `npm run eval:retrieval` |
 | PDF (DTR) | `unpdf`, tylko w skrypcie offline | Chunki z numerem strony liczone raz i commitowane jako JSON; PDF-y serwowane statycznie, a cytat linkuje do `plik.pdf#page=N` |
 | Wykresy | Chart.js | Persona kierownika |
+| Pogoda | Open-Meteo (bez klucza, CC BY 4.0 — atrybucja w UI) | `src/server/sources/weather.ts`: 7 dni dla współrzędnych urządzenia (`lat`/`lon` w `devices.json`) albo GPS przeglądarki. **Tryb demo** zwraca zapisany deszczowy tydzień (przewidywalny pokaz). Narzędzie `get_weather` — AI zawsze je wywołuje i daje pogodę jako pierwszą sekcję |
 
 ### Architektura w kodzie
 

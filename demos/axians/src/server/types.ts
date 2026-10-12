@@ -11,6 +11,9 @@ export interface Device {
   location: string;
   installedAt: string;
   docId: string | null;
+  /** Device location — used for local weather. */
+  lat: number;
+  lon: number;
 }
 
 export interface Ticket {

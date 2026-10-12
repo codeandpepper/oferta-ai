@@ -9,9 +9,10 @@ import { semanticInput, searchTickets } from "../sources/tickets-semantic.ts";
 import { statsInput, causeStats, historyInput, deviceHistory } from "../sources/tickets-query.ts";
 import { docsInput, searchDocs } from "../sources/docs-rag.ts";
 import { partsInput, searchParts } from "../sources/parts.ts";
+import { getWeather, type WeatherQuery } from "../sources/weather.ts";
 import type { Ticket } from "../types.ts";
 
-export type RefKind = "zgloszenie" | "dokumentacja" | "czesc";
+export type RefKind = "zgloszenie" | "dokumentacja" | "czesc" | "pogoda";
 export interface Ref {
   kind: RefKind;
   id: string;
@@ -25,7 +26,7 @@ export const Answer = z.strictObject({
   summary: z.string().describe("1–2 zdania: najbardziej prawdopodobna przyczyna i co zrobić najpierw"),
   sections: z.array(
     z.strictObject({
-      kind: z.enum(["historia_typ", "historia_egzemplarz", "dokumentacja", "czesci"]),
+      kind: z.enum(["pogoda", "historia_typ", "historia_egzemplarz", "dokumentacja", "czesci"]),
       title: z.string(),
       text: z.string().describe("2–4 zdania, konkretne liczby i fakty z wyników narzędzi"),
       refs: z.array(z.string()).describe("ID źródeł z wyników narzędzi: numery zgłoszeń ZS-…, chunkId dokumentacji, partNo części"),
@@ -45,6 +46,9 @@ Zwykle użyj wszystkich źródeł, wywołując niezależne narzędzia równolegl
 3. device_history — historia tego konkretnego egzemplarza (ostatnie wizyty, uwagi techników, zalecenia).
 4. search_documentation — procedura / tabela usterek z dokumentacji producenta (jeśli urządzenie ma docId).
 5. search_parts — części i zamienniki, jeśli z historii lub dokumentacji wynika, że będą potrzebne.
+6. get_weather — pogoda z ostatnich 7 dni w miejscu urządzenia (opady, temperatury, wilgotność, porywy wiatru). Wywołaj zawsze.
+
+Pogodę przedstaw jako pierwszą sekcję (kind "pogoda", refs ["pogoda-7d"]) i powiąż ją z problemem: czy warunki (opady, wilgoć, mróz, upał, wiatr) wzmacniają lub osłabiają hipotezy z historii zgłoszeń. Jeśli warunki nie pasują do relacji technika (np. nie padało), powiedz to wprost i uwzględnij w diagnozie.
 
 Zasady:
 - Opieraj się wyłącznie na wynikach narzędzi. Każda sekcja musi wskazywać ID źródeł w refs.
@@ -79,7 +83,13 @@ const TOOLS = {
     tool: zodTool("search_parts", "Wyszukiwanie części zamiennych i zamienników pasujących do modelu urządzenia.", partsInput),
     run: (i: z.infer<typeof partsInput>) => searchParts(i),
   },
+  get_weather: {
+    label: "Pogoda — ostatnie 7 dni",
+    tool: zodTool("get_weather", "Pogoda dzienna z ostatnich 7 dni w miejscu, w którym jest urządzenie (lokalizacja ustalona przez aplikację).", z.strictObject({})),
+    run: (_: unknown, ctx: AskContext) => getWeather(ctx.weather),
+  },
 } as const;
+type AskContext = { weather: WeatherQuery };
 type ToolName = keyof typeof TOOLS;
 
 export type AskEvent =
@@ -111,6 +121,16 @@ function collectRefs(result: unknown, refs: Record<string, Ref>) {
       refs[p.partNo] = refs[p.id] = { kind: "czesc", id: p.partNo, label: `${p.partNo} — ${p.name}`, detail: `Zamiennik/poprzednik: ${p.replaces || "—"}\nStan: ${p.stock} szt.\n${p.note}` };
     }
   }
+  if (result && typeof result === "object" && "summary" in result && "days" in result) {
+    const w = result as Awaited<ReturnType<typeof getWeather>>;
+    const s = w.summary;
+    refs["pogoda-7d"] = {
+      kind: "pogoda",
+      id: "pogoda-7d",
+      label: `Pogoda 7 dni · ${w.label}`,
+      detail: `Opady: ${s.precipitationMm} mm (${s.rainyDays} dni z deszczem, ostatnio ${s.lastRain ?? "—"})\nTemp.: ${s.tMin}…${s.tMax} °C, dni z mrozem: ${s.frostDays}\nŚr. wilgotność: ${s.avgHumidity}%, max porywy: ${s.maxGustKmh} km/h\nŹródło: ${w.source}`,
+    };
+  }
   if (result && typeof result === "object" && "ticketIds" in result) {
     for (const id of (result as { ticketIds: string[] }).ticketIds) {
       const t = tickets.find((x) => x.id === id);
@@ -119,13 +139,21 @@ function collectRefs(result: unknown, refs: Record<string, Ref>) {
   }
 }
 
-export async function* ask(deviceId: string, question: string): AsyncGenerator<AskEvent> {
+export async function* ask(deviceId: string, question: string, weather?: Partial<WeatherQuery>): AsyncGenerator<AskEvent> {
   const device = deviceById(deviceId);
   if (!device) {
     yield { type: "error", message: `Nieznane urządzenie ${deviceId}` };
     return;
   }
   const doc = docs.find((d) => d.id === device.docId);
+  const ctx: AskContext = {
+    weather: {
+      lat: weather?.lat ?? device.lat,
+      lon: weather?.lon ?? device.lon,
+      label: weather?.label ?? device.location,
+      demo: weather?.demo ?? false,
+    },
+  };
   const messages: BetaMessageParam[] = [
     {
       role: "user",
@@ -161,7 +189,7 @@ Technik mówi: „${question}”`,
         }
         try {
           // strict tools guarantee the input matches the schema
-          const result = def.run(call.input as never);
+          const result: unknown = await def.run(call.input as never, ctx);
           collectRefs(result, refs);
           const count = Array.isArray(result) ? result.length : (result as { total?: number }).total ?? 1;
           yield { type: "tool", name: call.name, label: def.label, input: call.input, resultCount: count };

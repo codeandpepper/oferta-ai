@@ -14,7 +14,7 @@ export const Protocol = z.strictObject({
   priority: z.enum(["niski", "normalny", "wysoki", "krytyczny"]),
   recommendations: z.array(z.string()).describe("zalecenia na przyszłość"),
   nextServiceAt: z.string().nullable().describe("termin kolejnego przeglądu YYYY-MM-DD, jeśli wynika z notatki lub standardu"),
-  missing: z.array(z.string()).describe("czego brakuje w notatce, o co warto dopytać technika"),
+  missing: z.array(z.string()).describe("tylko brakujące WYMAGANE elementy protokołu; pusta lista, gdy notatka je zawiera"),
 });
 export type Protocol = z.infer<typeof Protocol>;
 
@@ -27,7 +27,10 @@ export async function draftProtocol(deviceId: string, note: string, context?: st
     ...base,
     max_tokens: 8000,
     output_config: { effort: "low", format: betaZodOutputFormat(Protocol) },
-    system: "Zamieniasz podyktowaną, chaotyczną notatkę technika serwisu na ustrukturyzowany protokół zlecenia. Po polsku. Nie dopisuj czynności, których technik nie wymienił; braki wpisz w missing. Części dopasuj do katalogu, jeśli to możliwe.",
+    system: `Zamieniasz podyktowaną notatkę technika serwisu na ustrukturyzowany protokół zlecenia. Po polsku.
+Nie dopisuj czynności, których technik nie wymienił. Części dopasuj do katalogu, jeśli to możliwe.
+Wymagane elementy protokołu: objaw (zgłoszony problem), przyczyna, wykonane czynności, użyte części (lub wyraźnie „bez części”), czas pracy, wynik testu po naprawie, termin kolejnego przeglądu (może być „zgodnie z planem” z datą).
+W missing wpisz krótko tylko te wymagane elementy, których w notatce brakuje. Jeśli notatka zawiera wszystkie — missing ma być pustą listą. Nie dodawaj pytań o szczegóły spoza tej listy.`,
     messages: [{
       role: "user",
       content: `Dzisiaj: ${new Date().toISOString().slice(0, 10)}

@@ -97,3 +97,22 @@ select { max-width: 100%; text-overflow: ellipsis; }
 .section .hint, .answer > .hint, .history .hint, .query .hint { background: transparent; border: 0; padding: 2px 0; }
 body.hints-off .hint { display: none; }
 .plate-photo { display: block; width: 100%; max-height: 240px; object-fit: contain; border-radius: 8px; border: 1px solid var(--border); background: var(--surface-2); margin-bottom: 8px; }
+.small-label { font-size: 13px; }
+.missing ul { margin: 4px 0 0; padding-left: 18px; }
+.complete { color: var(--ok); font-weight: 600; font-size: 14px; }
+
+/* weather */
+:root { --k-weather: #0072c3; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --k-weather: #33b1ff; } }
+.k-weather { --k: var(--k-weather); }
+.weather-card { display: grid; gap: 10px; border: 1px solid var(--border); border-left: 4px solid var(--k-weather); border-radius: 8px; padding: 10px 12px; background: var(--surface-2); }
+.weather-head { display: flex; align-items: baseline; gap: 4px; flex-wrap: wrap; }
+.demo-badge { margin-left: auto; font-size: 11px; font-weight: 800; color: var(--warn); border: 1px solid var(--warn); border-radius: 4px; padding: 0 6px; }
+.weather-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; }
+.stat { display: grid; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; }
+.stat .k { font-size: 12px; color: var(--muted); font-weight: 600; } .stat strong { font-size: 17px; } .stat .muted { font-size: 12px; }
+.rain-bars { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; height: 70px; align-items: end; }
+.rain-day { display: grid; grid-template-rows: 1fr auto; height: 100%; align-items: end; justify-items: center; font-size: 11px; color: var(--muted); }
+.rain-bar { width: 70%; background: var(--k-weather); border-radius: 3px 3px 0 0; min-height: 2px; }
+.weather-actions .source { font-size: 11px; margin-left: auto; }
+.toggle { display: inline-flex; gap: 6px; align-items: center; font-size: 13px; color: var(--muted); cursor: pointer; }
