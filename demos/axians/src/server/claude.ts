@@ -3,7 +3,7 @@ import type { BetaMessageParam, BetaTool } from "@anthropic-ai/sdk/resources/bet
 import { z } from "zod";
 
 export const client = new Anthropic();
-export const MODEL = process.env.CLAUDE_MODEL ?? "claude-sonnet-5-5";
+export const MODEL = process.env.CLAUDE_MODEL ?? "claude-opus-5-5";
 
 /**
  * Shared request options. Server-side refusal fallback is on by default

@@ -1,5 +1,10 @@
 // Thin client for the demo API. Types mirror the server's JSON.
 export interface Device { id: string; type: string; manufacturer: string; model: string; serial: string; client: string; location: string; installedAt: string; docId: string | null; lat: number; lon: number }
+export interface Plate {
+  manufacturer: string | null; model: string | null; deviceKind: string | null; serial: string | null;
+  identifiers: { label: string; value: string }[]; parameters: { label: string; value: string }[];
+  photoConditions: string; uncertain: string[];
+}
 export interface WeatherOpts { lat?: number; lon?: number; label?: string; demo: boolean }
 export interface Weather {
   label: string; demo: boolean; source: string;
@@ -34,9 +39,9 @@ export const api = {
   },
   identify: (image: Blob) => {
     const form = new FormData();
-    form.append("image", image, "tabliczka.png");
+    form.append("image", image, image.type === "image/png" ? "tabliczka.png" : "tabliczka.jpg");
     return fetch("/api/identify", { method: "POST", body: form }).then((r) =>
-      json<{ plate: { manufacturer: string | null; model: string | null; serial: string | null; otherData: string[]; readable: boolean }; device: Device | null; matchedBy: string | null }>(r),
+      json<{ plate: Plate; device: Device | null; matchedBy: string | null }>(r),
     );
   },
   protocol: (deviceId: string, note: string, context?: string) => post("/api/protocol", { deviceId, note, context }).then((r) => json<Protocol>(r)),

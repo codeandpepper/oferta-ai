@@ -7,6 +7,8 @@ export interface Device {
   manufacturer: string;
   model: string;
   serial: string;
+  /** Other numbers printed on the nameplate (order no., generator no.) — used for matching. */
+  altIds?: string[];
   client: string;
   location: string;
   installedAt: string;

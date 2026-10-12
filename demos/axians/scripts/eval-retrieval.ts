@@ -19,6 +19,9 @@ const docCases: { q: string; doc: string; page: number }[] = [
   { q: "kod 88 błąd przetwornika wewnętrznego", doc: "grundfos-magna3", page: 52 },
   { q: "harmonogram przeglądów wymiana oleju co ile godzin", doc: "fogo-agregaty", page: 20 },
   { q: "tabliczka znamionowa pompy numer seryjny", doc: "grundfos-magna3", page: 18 },
+  { q: "wahania napięcia szczotki prądnicy", doc: "bosch-bwka3", page: 5 },
+  { q: "wymiana szczotek czyszczenie pierścieni ślizgowych", doc: "bosch-bwka3", page: 6 },
+  { q: "uszczelka miski olejowej zamiennik", doc: "bosch-bwka3", page: 7 },
 ];
 
 let ok = 0, total = 0;

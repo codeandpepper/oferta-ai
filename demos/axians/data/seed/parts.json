@@ -1,16 +1,284 @@
 [
-  { "id": "P-01", "partNo": "FG-FP-15540", "name": "Filtr paliwa (wkład)", "deviceType": "agregat", "fits": ["FV 15540 ER", "FV 10001 ER"], "replaces": "FG-FP-10001 (wycofany 2023)", "stock": 14, "note": "Przy wymianie spuścić osad z odstojnika zbiornika." },
-  { "id": "P-02", "partNo": "FG-KW-01", "name": "Korek wlewu paliwa z uszczelką", "deviceType": "agregat", "fits": ["FV 15540 ER", "FV 10001 ER"], "replaces": "FG-KW-00 (bez uszczelki EPDM — nieszczelny przy opadach)", "stock": 9, "note": "Nowa wersja z uszczelką EPDM; zalecana przy wodzie w paliwie." },
-  { "id": "P-03", "partNo": "FG-SW-BPR6", "name": "Świeca zapłonowa", "deviceType": "agregat", "fits": ["FV 15540 ER", "FV 10001 ER"], "replaces": "NGK BPR6ES (zamiennik)", "stock": 40, "note": "" },
-  { "id": "P-04", "partNo": "FG-AK-12V24", "name": "Akumulator rozruchowy 12 V 24 Ah", "deviceType": "agregat", "fits": ["FV 15540 ER", "FV 10001 ER"], "replaces": "", "stock": 5, "note": "" },
-  { "id": "P-05", "partNo": "FG-FPW-15540", "name": "Filtr powietrza (wkład papierowy)", "deviceType": "agregat", "fits": ["FV 15540 ER", "FV 10001 ER"], "replaces": "", "stock": 22, "note": "" },
-  { "id": "P-06", "partNo": "FG-AVR-3F", "name": "Regulator napięcia AVR 3-faz.", "deviceType": "agregat", "fits": ["FV 15540 ER"], "replaces": "FG-AVR-3F-v1", "stock": 2, "note": "" },
-  { "id": "P-07", "partNo": "FG-ZL-CZP", "name": "Złącze czujnika poziomu paliwa (kostka uszczelniona IP67)", "deviceType": "agregat", "fits": ["FV 15540 ER", "FV 10001 ER"], "replaces": "FG-ZL-CZP-00 (nieuszczelnione, koroduje)", "stock": 6, "note": "Zalecane przy śladach korozji na złączu." },
-  { "id": "P-08", "partNo": "OL-10W30-1L", "name": "Olej silnikowy 10W-30, 1 l", "deviceType": "agregat", "fits": ["FV 15540 ER", "FV 10001 ER"], "replaces": "", "stock": 60, "note": "" },
-  { "id": "P-09", "partNo": "GF-99280455", "name": "Przetwornik różnicy ciśnienia i temperatury MAGNA3", "deviceType": "pompa", "fits": ["MAGNA3 32-120 F", "MAGNA3 40-180 F", "MAGNA3 65-150 F"], "replaces": "", "stock": 3, "note": "Kod błędu 88 — najpierw sprawdzić wtyczkę przetwornika." },
-  { "id": "P-10", "partNo": "GF-UST-MAGNA3", "name": "Zestaw uszczelek korpusu MAGNA3", "deviceType": "pompa", "fits": ["MAGNA3 32-120 F", "MAGNA3 40-180 F", "MAGNA3 65-150 F"], "replaces": "", "stock": 8, "note": "" },
-  { "id": "P-11", "partNo": "FM-SEP-DN50", "name": "Separator zanieczyszczeń z magnesem DN50", "deviceType": "pompa", "fits": ["MAGNA3 32-120 F", "MAGNA3 40-180 F"], "replaces": "", "stock": 4, "note": "Zalecany przy powtarzającym się alarmie 51 (osady magnetytu)." },
-  { "id": "P-12", "partNo": "TR-SIL-1KG", "name": "Wkład osuszacza (silikażel) 1 kg", "deviceType": "transformator", "fits": ["TNOSN 400/15", "TNOSN 630/15", "TNOSN 1000/15"], "replaces": "", "stock": 12, "note": "Wymienić przy zmianie barwy > 2/3 objętości." },
-  { "id": "P-13", "partNo": "TR-USZ-IZ", "name": "Uszczelka izolatora przepustowego nN", "deviceType": "transformator", "fits": ["TNOSN 400/15", "TNOSN 630/15", "TNOSN 1000/15"], "replaces": "", "stock": 10, "note": "" },
-  { "id": "P-14", "partNo": "TR-OL-NYN", "name": "Olej transformatorowy, kanister 20 l", "deviceType": "transformator", "fits": ["TNOSN 400/15", "TNOSN 630/15", "TNOSN 1000/15"], "replaces": "", "stock": 6, "note": "" }
+  {
+    "id": "P-01",
+    "partNo": "FG-FP-15540",
+    "name": "Filtr paliwa (wkład)",
+    "deviceType": "agregat",
+    "fits": [
+      "FV 15540 ER",
+      "FV 10001 ER"
+    ],
+    "replaces": "FG-FP-10001 (wycofany 2023)",
+    "stock": 14,
+    "note": "Przy wymianie spuścić osad z odstojnika zbiornika."
+  },
+  {
+    "id": "P-02",
+    "partNo": "FG-KW-01",
+    "name": "Korek wlewu paliwa z uszczelką",
+    "deviceType": "agregat",
+    "fits": [
+      "FV 15540 ER",
+      "FV 10001 ER"
+    ],
+    "replaces": "FG-KW-00 (bez uszczelki EPDM — nieszczelny przy opadach)",
+    "stock": 9,
+    "note": "Nowa wersja z uszczelką EPDM; zalecana przy wodzie w paliwie."
+  },
+  {
+    "id": "P-03",
+    "partNo": "FG-SW-BPR6",
+    "name": "Świeca zapłonowa",
+    "deviceType": "agregat",
+    "fits": [
+      "FV 15540 ER",
+      "FV 10001 ER"
+    ],
+    "replaces": "NGK BPR6ES (zamiennik)",
+    "stock": 40,
+    "note": ""
+  },
+  {
+    "id": "P-04",
+    "partNo": "FG-AK-12V24",
+    "name": "Akumulator rozruchowy 12 V 24 Ah",
+    "deviceType": "agregat",
+    "fits": [
+      "FV 15540 ER",
+      "FV 10001 ER"
+    ],
+    "replaces": "",
+    "stock": 5,
+    "note": ""
+  },
+  {
+    "id": "P-05",
+    "partNo": "FG-FPW-15540",
+    "name": "Filtr powietrza (wkład papierowy)",
+    "deviceType": "agregat",
+    "fits": [
+      "FV 15540 ER",
+      "FV 10001 ER"
+    ],
+    "replaces": "",
+    "stock": 22,
+    "note": ""
+  },
+  {
+    "id": "P-06",
+    "partNo": "FG-AVR-3F",
+    "name": "Regulator napięcia AVR 3-faz.",
+    "deviceType": "agregat",
+    "fits": [
+      "FV 15540 ER"
+    ],
+    "replaces": "FG-AVR-3F-v1",
+    "stock": 2,
+    "note": ""
+  },
+  {
+    "id": "P-07",
+    "partNo": "FG-ZL-CZP",
+    "name": "Złącze czujnika poziomu paliwa (kostka uszczelniona IP67)",
+    "deviceType": "agregat",
+    "fits": [
+      "FV 15540 ER",
+      "FV 10001 ER"
+    ],
+    "replaces": "FG-ZL-CZP-00 (nieuszczelnione, koroduje)",
+    "stock": 6,
+    "note": "Zalecane przy śladach korozji na złączu."
+  },
+  {
+    "id": "P-08",
+    "partNo": "OL-10W30-1L",
+    "name": "Olej silnikowy 10W-30, 1 l",
+    "deviceType": "agregat",
+    "fits": [
+      "FV 15540 ER",
+      "FV 10001 ER"
+    ],
+    "replaces": "",
+    "stock": 60,
+    "note": ""
+  },
+  {
+    "id": "P-09",
+    "partNo": "GF-99280455",
+    "name": "Przetwornik różnicy ciśnienia i temperatury MAGNA3",
+    "deviceType": "pompa",
+    "fits": [
+      "MAGNA3 32-120 F",
+      "MAGNA3 40-180 F",
+      "MAGNA3 65-150 F"
+    ],
+    "replaces": "",
+    "stock": 3,
+    "note": "Kod błędu 88 — najpierw sprawdzić wtyczkę przetwornika."
+  },
+  {
+    "id": "P-10",
+    "partNo": "GF-UST-MAGNA3",
+    "name": "Zestaw uszczelek korpusu MAGNA3",
+    "deviceType": "pompa",
+    "fits": [
+      "MAGNA3 32-120 F",
+      "MAGNA3 40-180 F",
+      "MAGNA3 65-150 F"
+    ],
+    "replaces": "",
+    "stock": 8,
+    "note": ""
+  },
+  {
+    "id": "P-11",
+    "partNo": "FM-SEP-DN50",
+    "name": "Separator zanieczyszczeń z magnesem DN50",
+    "deviceType": "pompa",
+    "fits": [
+      "MAGNA3 32-120 F",
+      "MAGNA3 40-180 F"
+    ],
+    "replaces": "",
+    "stock": 4,
+    "note": "Zalecany przy powtarzającym się alarmie 51 (osady magnetytu)."
+  },
+  {
+    "id": "P-12",
+    "partNo": "TR-SIL-1KG",
+    "name": "Wkład osuszacza (silikażel) 1 kg",
+    "deviceType": "transformator",
+    "fits": [
+      "TNOSN 400/15",
+      "TNOSN 630/15",
+      "TNOSN 1000/15"
+    ],
+    "replaces": "",
+    "stock": 12,
+    "note": "Wymienić przy zmianie barwy > 2/3 objętości."
+  },
+  {
+    "id": "P-13",
+    "partNo": "TR-USZ-IZ",
+    "name": "Uszczelka izolatora przepustowego nN",
+    "deviceType": "transformator",
+    "fits": [
+      "TNOSN 400/15",
+      "TNOSN 630/15",
+      "TNOSN 1000/15"
+    ],
+    "replaces": "",
+    "stock": 10,
+    "note": ""
+  },
+  {
+    "id": "P-14",
+    "partNo": "TR-OL-NYN",
+    "name": "Olej transformatorowy, kanister 20 l",
+    "deviceType": "transformator",
+    "fits": [
+      "TNOSN 400/15",
+      "TNOSN 630/15",
+      "TNOSN 1000/15"
+    ],
+    "replaces": "",
+    "stock": 6,
+    "note": ""
+  },
+  {
+    "id": "P-15",
+    "partNo": "BWK-21-014Z",
+    "name": "Szczotki prądnicy — zamiennik węglowy 6,3×10×16 mm (komplet 2 szt.)",
+    "deviceType": "agregat",
+    "fits": [
+      "Stromerzeuger BWKA 3"
+    ],
+    "replaces": "BWK-21-014 (oryginał wycofany)",
+    "stock": 4,
+    "note": "Wymieniać zawsze komplet, razem ze sprężynami BWK-21-020."
+  },
+  {
+    "id": "P-16",
+    "partNo": "BWK-21-020",
+    "name": "Sprężyna dociskowa szczotki",
+    "deviceType": "agregat",
+    "fits": [
+      "Stromerzeuger BWKA 3"
+    ],
+    "replaces": "",
+    "stock": 6,
+    "note": ""
+  },
+  {
+    "id": "P-17",
+    "partNo": "BWK-22-005",
+    "name": "Kondensator wzbudzenia 16 µF / 450 V",
+    "deviceType": "agregat",
+    "fits": [
+      "Stromerzeuger BWKA 3"
+    ],
+    "replaces": "",
+    "stock": 2,
+    "note": "Przy braku napięcia przy sprawnych szczotkach."
+  },
+  {
+    "id": "P-18",
+    "partNo": "USZ-ARK-1.0",
+    "name": "Arkusz uszczelkowy 1 mm (zamiennik uszczelki miski olejowej)",
+    "deviceType": "agregat",
+    "fits": [
+      "Stromerzeuger BWKA 3"
+    ],
+    "replaces": "BWK-31-077 uszczelka miski olejowej (wycofana)",
+    "stock": 3,
+    "note": "Wyciąć wg starej uszczelki; alternatywnie uszczelniacz silikonowy 250 °C."
+  },
+  {
+    "id": "P-19",
+    "partNo": "BWK-31-012",
+    "name": "Simmering wału korbowego",
+    "deviceType": "agregat",
+    "fits": [
+      "Stromerzeuger BWKA 3"
+    ],
+    "replaces": "",
+    "stock": 1,
+    "note": ""
+  },
+  {
+    "id": "P-20",
+    "partNo": "BWK-41-003",
+    "name": "Filtr powietrza (wkład)",
+    "deviceType": "agregat",
+    "fits": [
+      "Stromerzeuger BWKA 3"
+    ],
+    "replaces": "",
+    "stock": 5,
+    "note": ""
+  },
+  {
+    "id": "P-21",
+    "partNo": "BWK-41-010",
+    "name": "Świeca zapłonowa",
+    "deviceType": "agregat",
+    "fits": [
+      "Stromerzeuger BWKA 3"
+    ],
+    "replaces": "NGK B6HS (zamiennik)",
+    "stock": 10,
+    "note": ""
+  },
+  {
+    "id": "P-22",
+    "partNo": "BWK-51-001",
+    "name": "Przewód zasilający H07RN-F 3×2,5 mm²",
+    "deviceType": "agregat",
+    "fits": [
+      "Stromerzeuger BWKA 3"
+    ],
+    "replaces": "",
+    "stock": 20,
+    "note": "Przy parciejącej izolacji wymienić całość."
+  }
 ]

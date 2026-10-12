@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Agregat prądotwórczy BWKA 3 — instrukcja serwisowa (materiał demonstracyjny)</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm 18mm 16mm; }
+  body { font: 10.5pt/1.45 "Helvetica Neue", Arial, sans-serif; color: #111; }
+  .page { page-break-after: always; }
+  .page:last-child { page-break-after: auto; }
+  h1 { font-size: 22pt; margin: 0 0 6mm; }
+  h2 { font-size: 14pt; border-bottom: 2px solid #c8102e; padding-bottom: 2mm; margin: 0 0 4mm; }
+  h3 { font-size: 11.5pt; margin: 5mm 0 2mm; }
+  table { width: 100%; border-collapse: collapse; margin: 2mm 0 4mm; font-size: 9.5pt; }
+  th, td { border: 1px solid #999; padding: 1.6mm 2mm; text-align: left; vertical-align: top; }
+  th { background: #eee; }
+  .demo { border: 2px solid #c8102e; padding: 4mm; margin: 8mm 0; font-size: 10pt; }
+  .warn { border-left: 4px solid #e8a400; background: #fff7e0; padding: 2.5mm 3mm; margin: 3mm 0; }
+  .foot { position: fixed; bottom: -10mm; left: 0; right: 0; font-size: 8pt; color: #666; text-align: center; }
+  ol, ul { margin: 1mm 0 3mm; padding-left: 6mm; }
+  .muted { color: #666; }
+</style>
+</head>
+<body>
+<div class="foot">BWKA 3 — instrukcja serwisowa · MATERIAŁ DEMONSTRACYJNY, nie jest dokumentacją producenta</div>
+
+<!-- 1 -->
+<section class="page">
+  <h1>Agregat prądotwórczy BWKA 3<br><span class="muted" style="font-size:14pt">Instrukcja serwisowa i katalog części</span></h1>
+  <p>Agregat jednofazowy 230 V / 3 kVA z silnikiem czterosuwowym benzynowym chłodzonym powietrzem i prądnicą synchroniczną ze szczotkami. Konstrukcja z lat 80. (tabliczka z normą VDE 0530/69), eksploatowana jako źródło rezerwowe.</p>
+  <div class="demo"><strong>Materiał demonstracyjny.</strong> Dokument opracowano na potrzeby pokazu „Wiedza serwisowa w jednym miejscu” na podstawie danych z tabliczki znamionowej i typowej budowy agregatów tej klasy. Nie jest dokumentacją producenta — numery części mają charakter przykładowy.</div>
+  <h3>Spis treści</h3>
+  <table>
+    <tr><td>1. Dane techniczne i tabliczka znamionowa</td><td>str. 2</td></tr>
+    <tr><td>2. Bezpieczeństwo i eksploatacja</td><td>str. 3</td></tr>
+    <tr><td>3. Harmonogram przeglądów</td><td>str. 4</td></tr>
+    <tr><td>4. Tabela usterek</td><td>str. 5</td></tr>
+    <tr><td>5. Procedury serwisowe: szczotki i pierścienie, uszczelnienie miski olejowej, izolacja</td><td>str. 6</td></tr>
+    <tr><td>6. Wykaz części zamiennych i zamienników</td><td>str. 7</td></tr>
+  </table>
+</section>
+
+<!-- 2 -->
+<section class="page">
+  <h2>1. Dane techniczne i tabliczka znamionowa</h2>
+  <table>
+    <tr><th>Parametr</th><th>Wartość</th></tr>
+    <tr><td>Typ</td><td>BWKA 3 (Stromerzeuger — agregat prądotwórczy)</td></tr>
+    <tr><td>Napięcie znamionowe</td><td>1~ 230 V (wyjście 3~ niewyposażone — pole puste na tabliczce)</td></tr>
+    <tr><td>Prąd znamionowy</td><td>15,0 A</td></tr>
+    <tr><td>Moc pozorna</td><td>3 kVA</td></tr>
+    <tr><td>Współczynnik mocy cos φ</td><td>0,8–1</td></tr>
+    <tr><td>Prędkość obrotowa</td><td>3000 obr/min</td></tr>
+    <tr><td>Częstotliwość</td><td>50 Hz</td></tr>
+    <tr><td>Stopień ochrony</td><td>IP 44</td></tr>
+    <tr><td>Klasa izolacji</td><td>B / F</td></tr>
+    <tr><td>Silnik</td><td>czterosuwowy, benzynowy, chłodzony powietrzem; rozruch ręczny linką</td></tr>
+    <tr><td>Olej silnikowy</td><td>SAE 10W-30, pojemność ok. 0,6 l</td></tr>
+  </table>
+  <h3>Pola tabliczki znamionowej</h3>
+  <table>
+    <tr><th>Pole (oryg.)</th><th>Znaczenie</th></tr>
+    <tr><td>Best.-Nr.</td><td>numer zamówieniowy / katalogowy wersji agregatu</td></tr>
+    <tr><td>Fabr.-Nr. / FD.</td><td>numer fabryczny i kod daty produkcji (FD — rok i miesiąc)</td></tr>
+    <tr><td>Gen. … Nr.</td><td>numer prądnicy — potrzebny przy zamawianiu szczotek i regulatora</td></tr>
+    <tr><td>Isol.-Kl.</td><td>klasa izolacji uzwojeń</td></tr>
+    <tr><td>VDE 0530/69</td><td>norma dla maszyn elektrycznych wirujących, wydanie 1969</td></tr>
+  </table>
+  <div class="warn">Przy zamawianiu części zawsze podawaj Best.-Nr. i numer prądnicy (Gen.-Nr.). Tabliczki w tym wieku bywają nieczytelne — fotografuj je pod kątem, przy bocznym świetle.</div>
+</section>
+
+<!-- 3 -->
+<section class="page">
+  <h2>2. Bezpieczeństwo i eksploatacja</h2>
+  <ul>
+    <li>Agregat ustawiać na równym podłożu, na zewnątrz lub w dobrze wentylowanym pomieszczeniu — spaliny zawierają tlenek węgla.</li>
+    <li>Nie tankować przy pracującym lub gorącym silniku. Nie uruchamiać agregatu mokrego ani zawilgoconego.</li>
+    <li>Prace przy prądnicy (szczotki, pierścienie, zaciski) wykonywać wyłącznie przy wyłączonym silniku i odłączonym obciążeniu.</li>
+    <li>Ze względu na wiek urządzenia przed każdym sezonem sprawdzić stan izolacji przewodów i gniazd (patrz str. 6).</li>
+  </ul>
+  <h3>Rozruch</h3>
+  <ol>
+    <li>Sprawdzić poziom oleju (bagnet) i paliwa. Odłączyć wszystkie odbiorniki.</li>
+    <li>Otworzyć kranik paliwa, przy zimnym silniku włączyć ssanie.</li>
+    <li>Pociągnąć linkę rozrusznika do wyczucia oporu, następnie zdecydowanym ruchem.</li>
+    <li>Po 1–2 min wyłączyć ssanie, odczekać do ustabilizowania obrotów, zmierzyć napięcie (230 V ±5%).</li>
+    <li>Dopiero wtedy podłączać odbiorniki; nie przekraczać 15 A.</li>
+  </ol>
+  <h3>Zatrzymanie</h3>
+  <p>Odłączyć odbiorniki, pozostawić agregat 2 min na biegu jałowym, wyłączyć zapłon, zamknąć kranik paliwa.</p>
+  <h3>Przechowywanie (agregat rezerwowy)</h3>
+  <p>Co miesiąc uruchomić na 15 min pod obciążeniem ok. 50%. Przy przestoju &gt; 2 mies. spuścić paliwo z gaźnika. Przechowywać pod zadaszeniem — wilgoć przyspiesza zużycie pierścieni ślizgowych i izolacji.</p>
+</section>
+
+<!-- 4 -->
+<section class="page">
+  <h2>3. Harmonogram przeglądów</h2>
+  <table>
+    <tr><th>Czynność</th><th>Codziennie / przed pracą</th><th>Co 50 h lub 3 mies.</th><th>Co 100 h lub 6 mies.</th><th>Co 250 h lub 12 mies.</th></tr>
+    <tr><td>Poziom oleju, wycieki</td><td>●</td><td></td><td></td><td></td></tr>
+    <tr><td>Wymiana oleju</td><td></td><td>●</td><td></td><td></td></tr>
+    <tr><td>Filtr powietrza — czyszczenie / wymiana</td><td></td><td>czyszczenie</td><td>wymiana</td><td></td></tr>
+    <tr><td>Świeca zapłonowa — kontrola / wymiana</td><td></td><td></td><td>kontrola</td><td>wymiana</td></tr>
+    <tr><td>Szczotki prądnicy — pomiar długości</td><td></td><td></td><td>●</td><td></td></tr>
+    <tr><td>Pierścienie ślizgowe — czyszczenie</td><td></td><td></td><td>●</td><td></td></tr>
+    <tr><td>Uszczelnienie miski olejowej — kontrola</td><td></td><td>●</td><td></td><td></td></tr>
+    <tr><td>Rezystancja izolacji prądnicy i przewodów</td><td></td><td></td><td></td><td>●</td></tr>
+    <tr><td>Test pod obciążeniem (15 min, ≥ 50%)</td><td></td><td>●</td><td></td><td></td></tr>
+  </table>
+  <div class="warn">Minimalna długość szczotki: 8 mm (nowa: 16 mm). Przy długości &lt; 8 mm wymienić komplet — zużyta szczotka powoduje iskrzenie, wahania napięcia i przyspieszone zużycie pierścieni.</div>
+  <p>Agregat starszy niż 30 lat: przegląd roczny powinien obejmować ocenę opłacalności dalszej eksploatacji (dostępność części, koszty napraw, stan ramy i izolacji).</p>
+</section>
+
+<!-- 5 -->
+<section class="page">
+  <h2>4. Tabela usterek</h2>
+  <table>
+    <tr><th style="width:24%">Usterka</th><th style="width:38%">Możliwa przyczyna</th><th>Sposób usunięcia</th></tr>
+    <tr><td>Silnik nie uruchamia się</td><td>brak paliwa / zamknięty kranik; woda lub osad w paliwie; zalana lub zużyta świeca; zabrudzony filtr powietrza; za niski poziom oleju (czujnik blokuje zapłon)</td><td>uzupełnić / otworzyć kranik; spuścić paliwo z gaźnika i zbiornika, wymienić; osuszyć lub wymienić świecę; wyczyścić filtr; uzupełnić olej</td></tr>
+    <tr><td>Silnik gaśnie po kilku minutach</td><td>za niski poziom oleju (zadziałanie czujnika); wyciek oleju spod miski; przegrzanie przy przeciążeniu</td><td>uzupełnić olej, zlokalizować wyciek (patrz str. 6); zmniejszyć obciążenie</td></tr>
+    <tr><td>Wahania napięcia (np. 200–240 V)</td><td>zużyte szczotki prądnicy; zabrudzone lub owalne pierścienie ślizgowe; luźne połączenia; nierówne obroty silnika</td><td>zmierzyć szczotki, wymienić komplet; oczyścić pierścienie (str. 6); dokręcić zaciski; wyregulować obroty</td></tr>
+    <tr><td>Brak napięcia przy pracującym silniku</td><td>szczotki nie przylegają / zawieszone w prowadnicy; uszkodzony kondensator wzbudzenia; zadziałał wyłącznik termiczny</td><td>sprawdzić szczotki i sprężyny dociskowe; zmierzyć i wymienić kondensator; odczekać i zresetować wyłącznik</td></tr>
+    <tr><td>Za niskie napięcie pod obciążeniem</td><td>przeciążenie; zbyt niskie obroty; zużyte szczotki</td><td>zmniejszyć obciążenie; wyregulować obroty (3000 obr/min); wymienić szczotki</td></tr>
+    <tr><td>Iskrzenie przy pierścieniach, zapach spalenizny</td><td>zużyte szczotki; nagar na pierścieniach; uszkodzona izolacja przewodów prądnicy</td><td>natychmiast zatrzymać; wymienić szczotki, oczyścić pierścienie; zmierzyć rezystancję izolacji</td></tr>
+    <tr><td>Wyciek oleju</td><td>stwardniała uszczelka miski olejowej; luźny korek spustowy; uszkodzony simmering wału</td><td>wymienić uszczelkę (oryginał wycofany — zamiennik, str. 7); dokręcić korek; wymienić simmering</td></tr>
+  </table>
+</section>
+
+<!-- 6 -->
+<section class="page">
+  <h2>5. Procedury serwisowe</h2>
+  <h3>5.1 Wymiana szczotek i czyszczenie pierścieni ślizgowych</h3>
+  <ol>
+    <li>Zatrzymać silnik, odłączyć obciążenie, odczekać do ostygnięcia. Zdjąć pokrywę tylną prądnicy (4 wkręty).</li>
+    <li>Wyjąć szczotkotrzymacz, zmierzyć szczotki suwmiarką. Poniżej 8 mm — wymienić komplet (zawsze obie).</li>
+    <li>Pierścienie ślizgowe oczyścić płótnem ściernym P400 i alkoholem izopropylowym. Pierścień owalny lub z rowkami &gt; 0,3 mm — do przetoczenia w warsztacie.</li>
+    <li>Nowe szczotki dotrzeć: 30 min pracy bez obciążenia, potem 30 min przy 50% obciążenia.</li>
+    <li>Zmierzyć napięcie bez obciążenia i przy 50% obciążenia — wahania nie większe niż ±5%.</li>
+  </ol>
+  <h3>5.2 Uszczelnienie miski olejowej</h3>
+  <ol>
+    <li>Spuścić olej, zdemontować miskę (6 śrub M6, moment dokręcania 10 Nm).</li>
+    <li>Oczyścić powierzchnie przylgowe z resztek starej uszczelki.</li>
+    <li>Oryginalna uszczelka jest wycofana — zastosować zamiennik wycinany z arkusza lub uszczelniacz silikonowy do 250 °C (patrz str. 7).</li>
+    <li>Dokręcać śruby na krzyż, 10 Nm. Po 1 h pracy sprawdzić szczelność.</li>
+  </ol>
+  <h3>5.3 Kontrola izolacji</h3>
+  <p>Miernikiem izolacji 500 V DC zmierzyć rezystancję między uzwojeniem a obudową. Wymagane ≥ 1 MΩ; poniżej 0,5 MΩ — agregat wycofać z eksploatacji do czasu naprawy. Przewody z parciejącą lub spękaną izolacją wymienić na nowe (H07RN-F).</p>
+</section>
+
+<!-- 7 -->
+<section class="page">
+  <h2>6. Wykaz części zamiennych i zamienników</h2>
+  <table>
+    <tr><th>Nr części</th><th>Nazwa</th><th>Status</th><th>Zamiennik / uwagi</th></tr>
+    <tr><td>BWK-21-014</td><td>Szczotka prądnicy (komplet 2 szt.)</td><td>wycofana</td><td>BWK-21-014Z — zamiennik węglowy 6,3×10×16 mm z przewodem</td></tr>
+    <tr><td>BWK-21-020</td><td>Sprężyna dociskowa szczotki</td><td>dostępna</td><td>wymieniać razem ze szczotkami</td></tr>
+    <tr><td>BWK-22-005</td><td>Kondensator wzbudzenia 16 µF / 450 V</td><td>dostępna</td><td>—</td></tr>
+    <tr><td>BWK-31-077</td><td>Uszczelka miski olejowej</td><td>wycofana</td><td>USZ-ARK-1.0 (arkusz uszczelkowy 1 mm do wycięcia) lub uszczelniacz silikonowy 250 °C</td></tr>
+    <tr><td>BWK-31-012</td><td>Simmering wału korbowego</td><td>dostępna</td><td>—</td></tr>
+    <tr><td>BWK-41-003</td><td>Filtr powietrza (wkład)</td><td>dostępna</td><td>—</td></tr>
+    <tr><td>BWK-41-010</td><td>Świeca zapłonowa</td><td>dostępna</td><td>zamiennik NGK B6HS</td></tr>
+    <tr><td>BWK-51-001</td><td>Przewód zasilający H07RN-F 3×2,5 mm²</td><td>dostępna</td><td>przy parciejącej izolacji wymienić całość</td></tr>
+  </table>
+  <div class="warn">Dostępność części dla urządzenia tego wieku jest ograniczona. Przy kolejnej części wycofanej bez zamiennika rozważyć wymianę agregatu na nowy.</div>
+</section>
+</body>
+</html>

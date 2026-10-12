@@ -8,6 +8,7 @@ mkdirSync("public/docs", { recursive: true });
 for (const d of docs) {
   const target = "public" + d.file;
   if (existsSync(target)) { console.log(`ok       ${target}`); continue; }
+  if (!d.sourceUrl.startsWith("http")) { console.log(`skip     ${target} (materiał demonstracyjny — npm run seed:demo-docs)`); continue; }
   const res = await fetch(d.sourceUrl);
   if (!res.ok) throw new Error(`${d.id}: HTTP ${res.status} ${d.sourceUrl}`);
   writeFileSync(target, Buffer.from(await res.arrayBuffer()));

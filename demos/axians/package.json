@@ -15,7 +15,8 @@
     "eval:retrieval": "node scripts/eval-retrieval.ts",
     "heroku-postbuild": "npm run build",
     "deploy": "bash scripts/deploy-heroku.sh",
-    "seed:fetch-docs": "node scripts/fetch-docs.ts"
+    "seed:fetch-docs": "node scripts/fetch-docs.ts",
+    "seed:demo-docs": "\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless=new --no-pdf-header-footer --print-to-pdf=public/docs/bwka3-instrukcja-serwisowa-demo.pdf \"file://$PWD/data/docs-src/bosch-bwka3.html\""
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.131.0",

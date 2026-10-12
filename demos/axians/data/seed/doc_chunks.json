@@ -1144,5 +1144,53 @@
   "docId": "grundfos-magna3",
   "page": 63,
   "text": "Polski (PL) 63 13. Utylizacja produktu Podczas projektowania produktu zwracano uwagę na możliwość utylizacji i recykling materiałów. W przypadku utylizacji dowolnej pompy należy przyjąć następujące wartości średnie: • 85 % recykling • 10 % spalanie • 5 % składowanie odpadów Niniejszy wyrób i jego części należy zutylizować zgodnie z zasadami ochrony środowiska: 1. W tym celu należy skorzystać z usług przedsiębiorstw lokalnych, publicznych lub prywatnych, zajmujących się utylizacją odpadów i surowców wtórnych. 2. W przypadku jeżeli nie jest to możliwe, należy skontaktować się z najbliższą siedzibą lub warsztatem serwisowym firmy Grundfos. Symbol przekreślonego pojemnika na odpady oznacza, że produktu nie należy składować razem z odpadami komunalnymi. Po zakończeniu eksploatacji produktu oznaczonego tym symbolem należy dostarczyć go do punktu selektywnej zbiórki odpadów wskazanego przez władze lokalne. Selektywna zbiórka i recykling takich produktów pomagają chronić środowisko naturalne i zdrowie ludzi. Więcej informacji na temat zakończenia eksploatacji pomp zamieszczono na stronie www.grundfos.com/product-recycling. OSTRZEŻENIE Pole magnetyczne Śmierć lub poważne obrażenia ciała - Osoby z wszczepionym rozrusznikiem serca powinny zachować ostrożność podczas demontażu produktu i kontaktu z materiałami magnetycznymi znajdującymi się wewnątrz wirnika."
+ },
+ {
+  "id": "bosch-bwka3-p1-0",
+  "docId": "bosch-bwka3",
+  "page": 1,
+  "text": "Agregat prądotwórczy BWKA 3 Instrukcja serwisowa i katalog części Agregat jednofazowy 230 V / 3 kVA z silnikiem czterosuwowym benzynowym chłodzonym powietrzem i prądnicą synchroniczną ze szczotkami. Konstrukcja z lat 80. (tabliczka z normą VDE 0530/69), eksploatowana jako źródło rezerwowe. Materiał demonstracyjny. Dokument opracowano na potrzeby pokazu „Wiedza serwisowa w jednym miejscu” na podstawie danych z tabliczki znamionowej i typowej budowy agregatów tej klasy. Nie jest dokumentacją producenta — numery części mają charakter przykładowy. Spis treści 1. Dane techniczne i tabliczka znamionowa str. 2 2. Bezpieczeństwo i eksploatacja str. 3 3. Harmonogram przeglądów str. 4 4. Tabela usterek str. 5 5. Procedury serwisowe: szczotki i pierścienie, uszczelnienie miski olejowej, izolacja str. 6 6. Wykaz części zamiennych i zamienników str. 7"
+ },
+ {
+  "id": "bosch-bwka3-p2-0",
+  "docId": "bosch-bwka3",
+  "page": 2,
+  "text": "1. Dane techniczne i tabliczka znamionowa Parametr Wartość Typ BWKA 3 (Stromerzeuger — agregat prądotwórczy) Napięcie znamionowe 1~ 230 V (wyjście 3~ niewyposażone — pole puste na tabliczce) Prąd znamionowy 15,0 A Moc pozorna 3 kVA Współczynnik mocy cos φ 0,8–1 Prędkość obrotowa 3000 obr/min Częstotliwość 50 Hz Stopień ochrony IP 44 Klasa izolacji B / F Silnik czterosuwowy, benzynowy, chłodzony powietrzem; rozruch ręczny linką Olej silnikowy SAE 10W-30, pojemność ok. 0,6 l Pola tabliczki znamionowej Pole (oryg.) Znaczenie Best.-Nr. numer zamówieniowy / katalogowy wersji agregatu Fabr.-Nr. / FD. numer fabryczny i kod daty produkcji (FD — rok i miesiąc) Gen. … Nr. numer prądnicy — potrzebny przy zamawianiu szczotek i regulatora Isol.-Kl. klasa izolacji uzwojeń VDE 0530/69 norma dla maszyn elektrycznych wirujących, wydanie 1969 Przy zamawianiu części zawsze podawaj Best.-Nr. i numer prądnicy (Gen.-Nr.). Tabliczki w tym wieku bywają nieczytelne — fotografuj je pod kątem, przy bocznym świetle. BWKA 3 — instrukcja serwisowa · MATERIAŁ DEMONSTRACYJNY, nie jest dokumentacją producenta"
+ },
+ {
+  "id": "bosch-bwka3-p3-0",
+  "docId": "bosch-bwka3",
+  "page": 3,
+  "text": "2. Bezpieczeństwo i eksploatacja Agregat ustawiać na równym podłożu, na zewnątrz lub w dobrze wentylowanym pomieszczeniu — spaliny zawierają tlenek węgla. Nie tankować przy pracującym lub gorącym silniku. Nie uruchamiać agregatu mokrego ani zawilgoconego. Prace przy prądnicy (szczotki, pierścienie, zaciski) wykonywać wyłącznie przy wyłączonym silniku i odłączonym obciążeniu. Ze względu na wiek urządzenia przed każdym sezonem sprawdzić stan izolacji przewodów i gniazd (patrz str. 6). Rozruch 1. Sprawdzić poziom oleju (bagnet) i paliwa. Odłączyć wszystkie odbiorniki. 2. Otworzyć kranik paliwa, przy zimnym silniku włączyć ssanie. 3. Pociągnąć linkę rozrusznika do wyczucia oporu, następnie zdecydowanym ruchem. 4. Po 1–2 min wyłączyć ssanie, odczekać do ustabilizowania obrotów, zmierzyć napięcie (230 V ±5%). 5. Dopiero wtedy podłączać odbiorniki; nie przekraczać 15 A. Zatrzymanie Odłączyć odbiorniki, pozostawić agregat 2 min na biegu jałowym, wyłączyć zapłon, zamknąć kranik paliwa. Przechowywanie (agregat rezerwowy) Co miesiąc uruchomić na 15 min pod obciążeniem ok. 50%. Przy przestoju > 2 mies. spuścić paliwo z gaźnika. Przechowywać pod zadaszeniem — wilgoć przyspiesza zużycie pierścieni ślizgowych i izolacji. BWKA 3 — instrukcja serwisowa · MATERIAŁ DEMONSTRACYJNY, nie jest dokumentacją producenta"
+ },
+ {
+  "id": "bosch-bwka3-p4-0",
+  "docId": "bosch-bwka3",
+  "page": 4,
+  "text": "3. Harmonogram przeglądów Czynność Codziennie / przed pracą Co 50 h lub 3 mies. Co 100 h lub 6 mies. Co 250 h lub 12 mies. Poziom oleju, wycieki ● Wymiana oleju ● Filtr powietrza — czyszczenie / wymiana czyszczenie wymiana Świeca zapłonowa — kontrola / wymiana kontrola wymiana Szczotki prądnicy — pomiar długości ● Pierścienie ślizgowe — czyszczenie ● Uszczelnienie miski olejowej — kontrola ● Rezystancja izolacji prądnicy i przewodów ● Test pod obciążeniem (15 min, ≥ 50%) ● Minimalna długość szczotki: 8 mm (nowa: 16 mm). Przy długości < 8 mm wymienić komplet — zużyta szczotka powoduje iskrzenie, wahania napięcia i przyspieszone zużycie pierścieni. Agregat starszy niż 30 lat: przegląd roczny powinien obejmować ocenę opłacalności dalszej eksploatacji (dostępność części, koszty napraw, stan ramy i izolacji). BWKA 3 — instrukcja serwisowa · MATERIAŁ DEMONSTRACYJNY, nie jest dokumentacją producenta"
+ },
+ {
+  "id": "bosch-bwka3-p5-0",
+  "docId": "bosch-bwka3",
+  "page": 5,
+  "text": "4. Tabela usterek Usterka Możliwa przyczyna Sposób usunięcia Silnik nie uruchamia się brak paliwa / zamknięty kranik; woda lub osad w paliwie; zalana lub zużyta świeca; zabrudzony filtr powietrza; za niski poziom oleju (czujnik blokuje zapłon) uzupełnić / otworzyć kranik; spuścić paliwo z gaźnika i zbiornika, wymienić; osuszyć lub wymienić świecę; wyczyścić filtr; uzupełnić olej Silnik gaśnie po kilku minutach za niski poziom oleju (zadziałanie czujnika); wyciek oleju spod miski; przegrzanie przy przeciążeniu uzupełnić olej, zlokalizować wyciek (patrz str. 6); zmniejszyć obciążenie Wahania napięcia (np. 200–240 V) zużyte szczotki prądnicy; zabrudzone lub owalne pierścienie ślizgowe; luźne połączenia; nierówne obroty silnika zmierzyć szczotki, wymienić komplet; oczyścić pierścienie (str."
+ },
+ {
+  "id": "bosch-bwka3-p5-1",
+  "docId": "bosch-bwka3",
+  "page": 5,
+  "text": "6); dokręcić zaciski; wyregulować obroty Brak napięcia przy pracującym silniku szczotki nie przylegają / zawieszone w prowadnicy; uszkodzony kondensator wzbudzenia; zadziałał wyłącznik termiczny sprawdzić szczotki i sprężyny dociskowe; zmierzyć i wymienić kondensator; odczekać i zresetować wyłącznik Za niskie napięcie pod obciążeniem przeciążenie; zbyt niskie obroty; zużyte szczotki zmniejszyć obciążenie; wyregulować obroty (3000 obr/min); wymienić szczotki Iskrzenie przy pierścieniach, zapach spalenizny zużyte szczotki; nagar na pierścieniach; uszkodzona izolacja przewodów prądnicy natychmiast zatrzymać; wymienić szczotki, oczyścić pierścienie; zmierzyć rezystancję izolacji Wyciek oleju stwardniała uszczelka miski olejowej; luźny korek spustowy; uszkodzony simmering wału wymienić uszczelkę (oryginał wycofany — zamiennik, str. 7); dokręcić korek; wymienić simmering BWKA 3 — instrukcja serwisowa · MATERIAŁ DEMONSTRACYJNY, nie jest dokumentacją producenta"
+ },
+ {
+  "id": "bosch-bwka3-p6-0",
+  "docId": "bosch-bwka3",
+  "page": 6,
+  "text": "5. Procedury serwisowe 5.1 Wymiana szczotek i czyszczenie pierścieni ślizgowych 1. Zatrzymać silnik, odłączyć obciążenie, odczekać do ostygnięcia. Zdjąć pokrywę tylną prądnicy (4 wkręty). 2. Wyjąć szczotkotrzymacz, zmierzyć szczotki suwmiarką. Poniżej 8 mm — wymienić komplet (zawsze obie). 3. Pierścienie ślizgowe oczyścić płótnem ściernym P400 i alkoholem izopropylowym. Pierścień owalny lub z rowkami > 0,3 mm — do przetoczenia w warsztacie. 4. Nowe szczotki dotrzeć: 30 min pracy bez obciążenia, potem 30 min przy 50% obciążenia. 5. Zmierzyć napięcie bez obciążenia i przy 50% obciążenia — wahania nie większe niż ±5%. 5.2 Uszczelnienie miski olejowej 1. Spuścić olej, zdemontować miskę (6 śrub M6, moment dokręcania 10 Nm). 2. Oczyścić powierzchnie przylgowe z resztek starej uszczelki. 3. Oryginalna uszczelka jest wycofana — zastosować zamiennik wycinany z arkusza lub uszczelniacz silikonowy do 250 °C (patrz str. 7). 4. Dokręcać śruby na krzyż, 10 Nm. Po 1 h pracy sprawdzić szczelność. 5.3 Kontrola izolacji Miernikiem izolacji 500 V DC zmierzyć rezystancję między uzwojeniem a obudową. Wymagane ≥ 1 MΩ; poniżej 0,5 MΩ — agregat wycofać z eksploatacji do czasu naprawy. Przewody z parciejącą lub spękaną izolacją wymienić na nowe (H07RN-F). BWKA 3 — instrukcja serwisowa · MATERIAŁ DEMONSTRACYJNY, nie jest dokumentacją producenta"
+ },
+ {
+  "id": "bosch-bwka3-p7-0",
+  "docId": "bosch-bwka3",
+  "page": 7,
+  "text": "6. Wykaz części zamiennych i zamienników Nr części Nazwa Status Zamiennik / uwagi BWK-21- 014 Szczotka prądnicy (komplet 2 szt.) wycofana BWK-21-014Z — zamiennik węglowy 6,3×10×16 mm z przewodem BWK-21- 020 Sprężyna dociskowa szczotki dostępna wymieniać razem ze szczotkami BWK-22- 005 Kondensator wzbudzenia 16 μF / 450 V dostępna — BWK-31- 077 Uszczelka miski olejowej wycofana USZ-ARK-1.0 (arkusz uszczelkowy 1 mm do wycięcia) lub uszczelniacz silikonowy 250 °C BWK-31- 012 Simmering wału korbowego dostępna — BWK-41- 003 Filtr powietrza (wkład) dostępna — BWK-41- 010 Świeca zapłonowa dostępna zamiennik NGK B6HS BWK-51- 001 Przewód zasilający H07RN- F 3×2,5 mm² dostępna przy parciejącej izolacji wymienić całość Dostępność części dla urządzenia tego wieku jest ograniczona. Przy kolejnej części wycofanej bez zamiennika rozważyć wymianę agregatu na nowy. BWKA 3 — instrukcja serwisowa · MATERIAŁ DEMONSTRACYJNY, nie jest dokumentacją producenta"
  }
 ]

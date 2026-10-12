@@ -182,6 +182,12 @@ add(dev("AG-003"), { ...ag3Service, actions: "Wymiana oleju, filtra powietrza i 
   nextServiceAt: "2027-03-12",
 });
 
+// 2b) AG-007: old Bosch BWKA 3 (1987) — wear-related history, recommendation to replace.
+const boschVolt = { ...catsByType.agregat[1].cat, cause: "Zużyte szczotki / pierścienie ślizgowe prądnicy", actions: "Wymiana szczotek, czyszczenie pierścieni ślizgowych", parts: [] };
+add(dev("AG-007"), boschVolt, at("2024-09-17"), 0, { note: "stary bosch, napiecie skacze 200-240V. szczotki pradnicy starte do konca, pierscienie brudne. wym. szczotek (zamiennik, oryginalow brak), czyszczenie. ok", repairMinutes: 150 });
+add(dev("AG-007"), { ...catsByType.agregat[3].cat }, at("2025-06-03"), 0, { note: "gasnie po kilku min. olej ponizej min, wyciek spod uszczelki miski olejowej. dolano 0,8l, uszczelka do wym - czesc na zamowienie (model z 1987)", repairMinutes: 60 });
+add(dev("AG-007"), { ...catsByType.agregat[0].cat }, at("2026-04-22"), 0, { note: "przeglad. agregat z 1987r, korozja obudowy i ramy, wyciek oleju dalej (uszczelka miski nadal nie dostepna). izolacja przewodow parciejaca. ZALECAM modernizacje lub wymiane agregatu na nowy - koszty napraw rosna, czesci brak", repairMinutes: 120 });
+
 // 3) Repeat failures in the last quarter (2026-07..09): pumps at Centrum Logistyczne Zalesie, generator AG-004.
 const a51 = catsByType.pompa[0].cat;
 add(dev("PO-004"), a51, at("2026-07-08"), 0);
@@ -203,12 +209,12 @@ for (const d of devices) {
   const cats = catsByType[d.type];
   const service = cats.find((c) => c.cat.category === "przeglad")!.cat;
   // AG-003: inspections stop before its pinned March 2026 visit, which must stay the latest entry.
-  const until = d.id === "AG-003" ? Date.parse("2026-01-31") : END;
+  const until = d.id === "AG-003" ? Date.parse("2026-01-31") : d.id === "AG-007" ? Date.parse("2026-03-31") : END;
   for (let t = START + between(0, 60) * day; t < until; t += (inspectEveryDays[d.type] + between(-12, 12)) * day) {
     add(d, service, new Date(Math.round(t / day) * day + between(7, 14) * 3600000));
     tickets[tickets.length - 1].note += pick(extras);
   }
-  if (d.id === "AG-003") continue;
+  if (d.id === "AG-003" || d.id === "AG-007") continue;
   const faults = cats.filter((c) => c.cat.category !== "przeglad");
   const total = faults.reduce((s, c) => s + c.w, 0);
   for (let i = 0, n = between(...failures[d.type]); i < n; i++) {

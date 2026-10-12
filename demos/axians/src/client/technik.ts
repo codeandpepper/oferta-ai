@@ -1,5 +1,5 @@
 // Technician view: device → problem (multi-source answer) → closing protocol → ask again.
-import { api, type Answer, type Device, type Protocol, type Ref, type Weather, type WeatherOpts } from "./api.ts";
+import { api, type Answer, type Device, type Plate, type Protocol, type Ref, type Weather, type WeatherOpts } from "./api.ts";
 import { h, fmtDate, errorBox, hint } from "./dom.ts";
 import { micButton } from "./recorder.ts";
 import { samplePlate } from "./plate.ts";
@@ -20,6 +20,32 @@ const SAMPLE_NOTES: { label: string; text: string }[] = [
     text: "wym. filtr, ok",
   },
 ];
+
+/** Phone photos are often > 5 MB (API image limit) — downscale in the browser first, honouring EXIF rotation. */
+async function shrink(image: Blob, maxSide = 2000): Promise<Blob> {
+  const bmp = await createImageBitmap(image, { imageOrientation: "from-image" });
+  const scale = Math.min(1, maxSide / Math.max(bmp.width, bmp.height));
+  if (scale === 1 && image.size < 4_000_000) return image;
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.round(bmp.width * scale);
+  canvas.height = Math.round(bmp.height * scale);
+  canvas.getContext("2d")!.drawImage(bmp, 0, 0, canvas.width, canvas.height);
+  return new Promise((res) => canvas.toBlob((b) => res(b!), "image/jpeg", 0.88));
+}
+
+function renderPlate(p: Plate, device: Device | null, matchedBy: string | null) {
+  const title = [p.manufacturer, p.model].filter(Boolean).join(" ") || "Nieczytelne";
+  return h("div", { class: "plate-read" },
+    h("div", { class: "plate-title" }, h("strong", {}, title), p.deviceKind ? h("span", { class: "muted" }, ` · ${p.deviceKind}`) : null),
+    h("div", { class: "plate-conditions" }, "📷 ", p.photoConditions),
+    p.identifiers.length ? h("dl", { class: "kv plate-kv" }, ...p.identifiers.flatMap((i) => [h("dt", {}, i.label), h("dd", { class: "mono" }, i.value)])) : null,
+    p.parameters.length ? h("div", { class: "plate-params" }, ...p.parameters.map((x) => h("span", { class: "param" }, h("span", { class: "muted" }, `${x.label}: `), x.value))) : null,
+    p.uncertain.length ? h("div", { class: "warn small" }, "Niepewne: ", p.uncertain.join(", ")) : null,
+    device
+      ? h("div", { class: "ok" }, `✓ Dopasowano w ewidencji: ${device.id} (${matchedBy === "serial" ? "po numerze z tabliczki" : "po modelu"})`)
+      : h("div", { class: "warn" }, "Brak tego urządzenia w ewidencji"),
+  );
+}
 
 const KIND: Record<Answer["sections"][number]["kind"], { label: string; cls: string; how: string }> = {
   pogoda: { label: "Warunki pogodowe", cls: "k-weather", how: "Pogoda z ostatniego tygodnia w miejscu urządzenia, zestawiona z historią awarii — np. opady i wilgoć sprzyjają zawilgoceniu paliwa i złączy." },
@@ -108,19 +134,14 @@ export async function mountTechnik(root: HTMLElement) {
   fileInput.addEventListener("change", () => fileInput.files?.[0] && identify(fileInput.files[0]));
 
   let photoUrl: string | null = null;
-  async function identify(image: Blob) {
+  async function identify(original: Blob) {
     if (photoUrl) URL.revokeObjectURL(photoUrl);
-    photoUrl = URL.createObjectURL(image);
+    photoUrl = URL.createObjectURL(original);
     const photo = h("img", { class: "plate-photo", src: photoUrl, alt: "Zdjęcie tabliczki znamionowej" });
     deviceStatus.replaceChildren(photo, h("div", { class: "working" }, "Odczytuję tabliczkę znamionową…"));
     try {
-      const r = await api.identify(image);
-      const read = [r.plate.manufacturer, r.plate.model, r.plate.serial].filter(Boolean).join(" · ");
-      deviceStatus.replaceChildren(
-        photo,
-        h("div", { class: "plate-read" }, h("strong", {}, "Odczytano: "), read || "nieczytelne",
-          r.device ? h("span", { class: "ok" }, ` ✓ dopasowano w ewidencji (${r.matchedBy === "serial" ? "po nr seryjnym" : "po modelu"})`) : h("span", { class: "warn" }, " — brak w ewidencji")),
-      );
+      const r = await api.identify(await shrink(original));
+      deviceStatus.replaceChildren(photo, renderPlate(r.plate, r.device, r.matchedBy));
       if (r.device) { select.value = r.device.id; setDevice(r.device); }
     } catch (e) {
       deviceStatus.replaceChildren(photo, errorBox(e));
@@ -159,6 +180,10 @@ export async function mountTechnik(root: HTMLElement) {
         const demo = devices.find((d) => d.id === "AG-003")!;
         await identify(await samplePlate(demo));
       } }, "Przykładowa tabliczka"),
+      h("button", { type: "button", class: "ghost", title: "Prawdziwe zdjęcie tabliczki starego agregatu — obrócone, słabo oświetlone, po niemiecku", onclick: async () => {
+        const res = await fetch("/samples/tabliczka_znamionowa_agregat.jpg");
+        await identify(await res.blob());
+      } }, "Zdjęcie z terenu"),
     ),
     fileInput,
     select,

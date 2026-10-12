@@ -102,7 +102,7 @@ Uzasadnienie i źródła: `docs/2026-10-07-axians-demo-stack-research.md`.
 | Serwer | Hono (`@hono/node-server`) | Lekki, ma natywny `parseBody` do uploadu audio i zdjęć bez multera |
 | Frontend | Jeden statyczny SPA: Vite `vanilla-ts`, bez frameworka | Serwowany przez ten sam serwer; build w `heroku-postbuild` |
 | Dane | **Pliki JSON, bez bazy** | `data/seed/*.json` wczytywane do pamięci przy starcie; nowe zgłoszenia w pamięci + dopisywane do `/tmp/tickets.runtime.json`. Zero natywnych zależności |
-| LLM | Claude (`@anthropic-ai/sdk`), model `claude-sonnet-5-5` | Vision (tabliczka, usterka), tool use (orkiestracja źródeł), structured output (protokół), pytanie → spec zapytania w JSON (kierownik) |
+| LLM | Claude (`@anthropic-ai/sdk`), model `claude-opus-5-5` (zmienna `CLAUDE_MODEL`) | Vision (tabliczka, usterka), tool use (orkiestracja źródeł), structured output (protokół), pytanie → spec zapytania w JSON (kierownik) |
 | Speech-to-text | ElevenLabs Scribe, `model_id: scribe_v2`, `language_code: pol` | `POST /v1/speech-to-text`, nagranie z przeglądarki przez `MediaRecorder` (webm/opus) wysyłamy bez konwersji |
 | Text-to-speech | Opcjonalnie, ElevenLabs | Tylko jeśli zostanie czas, np. odczytanie podsumowania; nie jest w krytycznej ścieżce |
 | Wyszukiwanie w tekście | Własny `src/server/search.ts`: TF-IDF na trigramach znakowych + normalizacja (bez ogonków, rozwijanie skrótów techników) | **Bez embeddingów.** Test 2026-10-07: `multilingual-e5-small` źle rankował notatki i zajmował ~925 MB RAM. Część „semantyczną” robi Claude: pisze zapytanie z synonimami/skrótami i ocenia kandydatów. Jakość sprawdza `npm run eval:retrieval` |
@@ -189,7 +189,16 @@ publiczne.
   źródłowy, data pobrania) w `data/seed/docs.json`. `npm run seed:fetch-docs`
   pobiera je ponownie ze źródeł, jeśli trzeba je odświeżyć. Obecnie: FOGO
   (agregaty FV 10001 ER / FV 15540 ER, tabela usterek str. 22) i Grundfos
-  MAGNA3 (PL, kody alarmów str. 52). Transformatory (fikcyjne) nie mają DTR.
+  MAGNA3 (PL, kody alarmów str. 52) oraz **Bosch BWKA 3 — dokumentacja
+  demonstracyjna** (publicznie nie istnieje; źródło HTML w
+  `data/docs-src/bosch-bwka3.html`, PDF: `npm run seed:demo-docs`, potem
+  `npm run seed:docs`). Jest wyraźnie oznaczona jako materiał demonstracyjny —
+  tak ją przedstawiamy. Transformatory (fikcyjne) nie mają DTR.
+- **AG-007 Bosch BWKA 3 (1987)** — do pokazu odczytu prawdziwej, obróconej
+  tabliczki (`public/samples/tabliczka_znamionowa_agregat.jpg`, przycisk
+  „Zdjęcie z terenu”). Historia: szczotki prądnicy, wyciek oleju bez
+  dostępnej uszczelki, zalecenie wymiany agregatu (2026-04-22). Części
+  `BWK-*` / `USZ-ARK-1.0` w `parts.json`.
 - **Scenariusz demo opiera się na AG-003** (FOGO FV 15540 ER, PEC Borówiec):
   12 zgłoszeń „nie uruchamia się” dla agregatów (8× woda w paliwie), a
   ostatnia wizyta AG-003 (2026-03-12) zaleca wymianę złącza czujnika

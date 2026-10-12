@@ -116,3 +116,12 @@ body.hints-off .hint { display: none; }
 .rain-bar { width: 70%; background: var(--k-weather); border-radius: 3px 3px 0 0; min-height: 2px; }
 .weather-actions .source { font-size: 11px; margin-left: auto; }
 .toggle { display: inline-flex; gap: 6px; align-items: center; font-size: 13px; color: var(--muted); cursor: pointer; }
+
+/* nameplate read-out */
+.plate-read { display: grid; gap: 6px; font-size: 14px; border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; background: var(--surface-2); }
+.plate-title { font-size: 15px; }
+.plate-conditions { color: var(--muted); font-size: 13px; }
+.plate-kv { font-size: 13px; }
+.plate-params { display: flex; flex-wrap: wrap; gap: 4px 8px; font-size: 13px; }
+.param { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1px 8px; }
+.small { font-size: 13px; }

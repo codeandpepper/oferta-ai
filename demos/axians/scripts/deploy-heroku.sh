@@ -55,7 +55,7 @@ say "Config vars"
 heroku config:set -a "$APP" \
   ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY" \
   ELEVENLABS_API_KEY="$ELEVENLABS_API_KEY" \
-  CLAUDE_MODEL="${CLAUDE_MODEL:-claude-sonnet-5-5}" \
+  CLAUDE_MODEL="${CLAUDE_MODEL:-claude-opus-5-5}" \
   DEMO_PASSWORD="$DEMO_PASSWORD" >/dev/null
 echo "  ustawione"
 

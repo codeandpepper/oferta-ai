@@ -39,5 +39,27 @@
       "52": "TABELA WYKRYWANIA USTEREK: kody ostrzeżeń i alarmów (10, 29, 40, 51 pompa zablokowana, 64, 72, 74, 77, 84, 88 błąd przetwornika, 93), przyczyny i rozwiązania.",
       "18": "Tabliczka znamionowa pompy: model, numer seryjny, kod daty produkcji."
     }
+  },
+  {
+    "id": "bosch-bwka3",
+    "title": "Bosch BWKA 3 — instrukcja serwisowa i katalog części (materiał demonstracyjny)",
+    "deviceType": "agregat",
+    "models": [
+      "Stromerzeuger BWKA 3"
+    ],
+    "file": "/docs/bwka3-instrukcja-serwisowa-demo.pdf",
+    "pages": [
+      1,
+      7
+    ],
+    "sourceUrl": "demo:data/docs-src/bosch-bwka3.html",
+    "retrievedAt": "2026-10-12",
+    "pageHints": {
+      "2": "Dane techniczne i opis pól tabliczki znamionowej (Best.-Nr., Fabr.-Nr., Gen.-Nr.).",
+      "4": "Harmonogram przeglądów: olej, filtr, świeca, szczotki prądnicy (min. 8 mm), pierścienie ślizgowe, izolacja.",
+      "5": "TABELA USTEREK: silnik nie uruchamia się, gaśnie, wahania napięcia (szczotki, pierścienie ślizgowe), brak napięcia (kondensator wzbudzenia), wyciek oleju (uszczelka miski).",
+      "6": "Procedury: wymiana szczotek i czyszczenie pierścieni ślizgowych, uszczelnienie miski olejowej, pomiar izolacji.",
+      "7": "Wykaz części zamiennych i zamienników: szczotki, uszczelka miski olejowej (wycofana), kondensator, świeca."
+    }
   }
 ]
