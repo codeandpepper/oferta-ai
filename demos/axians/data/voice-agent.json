@@ -6,5 +6,9 @@
     "search_service_knowledge": "tool_9701m4qr20a3f1wvw55f56m976ak",
     "select_device": "tool_5701m4qr20gdfnsbyrnkh3pcbfw0"
   },
-  "agentId": "agent_5701m4qr20pfesg9y5tyqn6pkdav"
+  "agentId": "agent_5701m4qr20pfesg9y5tyqn6pkdav",
+  "pronunciation": {
+    "id": "zDq5Yt62jyqcQcPfJl8L",
+    "versionId": "a9EzkJofKdbag32oRaZf"
+  }
 }

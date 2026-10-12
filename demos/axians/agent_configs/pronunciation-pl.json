@@ -1,0 +1,202 @@
+{
+  "name": "Axians demo — wymowa PL",
+  "description": "Wymowa nazw urządzeń, modeli i skrótów dla agenta głosowego",
+  "rules": [
+    {
+      "type": "alias",
+      "string_to_replace": "AG-001",
+      "alias": "a gie zero zero jeden",
+      "case_sensitive": true,
+      "word_boundaries": true
+    },
+    {
+      "type": "alias",
+      "string_to_replace": "AG-002",
+      "alias": "a gie zero zero dwa",
+      "case_sensitive": true,
+      "word_boundaries": true
+    },
+    {
+      "type": "alias",
+      "string_to_replace": "AG-003",
+      "alias": "a gie zero zero trzy",
+      "case_sensitive": true,
+      "word_boundaries": true
+    },
+    {
+      "type": "alias",
+      "string_to_replace": "AG-004",
+      "alias": "a gie zero zero cztery",
+      "case_sensitive": true,
+      "word_boundaries": true
+    },
+    {
+      "type": "alias",
+      "string_to_replace": "AG-005",
+      "alias": "a gie zero zero pięć",
+      "case_sensitive": true,
+      "word_boundaries": true
+    },
+    {
+      "type": "alias",
+      "string_to_replace": "AG-006",
+      "alias": "a gie zero zero sześć",
+      "case_sensitive": true,
+      "word_boundaries": true
+    },
+    {
+      "type": "alias",
+      "string_to_replace": "PO-001",
+      "alias": "pe o zero zero jeden",
+      "case_sensitive": true,
+      "word_boundaries": true
+    },
+    {
+      "type": "alias",
+      "string_to_replace": "PO-002",
+      "alias": "pe o zero zero dwa",
+      "case_sensitive": true,
+      "word_boundaries": true
+    },
+    {
+      "type": "alias",
+      "string_to_replace": "PO-003",
+      "alias": "pe o zero zero trzy",
+      "case_sensitive": true,
+      "word_boundaries": true
+    },
+    {
+      "type": "alias",
+      "string_to_replace": "PO-004",
+      "alias": "pe o zero zero cztery",
+      "case_sensitive": true,
+      "word_boundaries": true
+    },
+    {
+      "type": "alias",
+      "string_to_replace": "PO-005",
+      "alias": "pe o zero zero pięć",
+      "case_sensitive": true,
+      "word_boundaries": true
+    },
+    {
+      "type": "alias",
+      "string_to_replace": "TR-001",
+      "alias": "te er zero zero jeden",
+      "case_sensitive": true,
+      "word_boundaries": true
+    },
+    {
+      "type": "alias",
+      "string_to_replace": "TR-002",
+      "alias": "te er zero zero dwa",
+      "case_sensitive": true,
+      "word_boundaries": true
+    },
+    {
+      "type": "alias",
+      "string_to_replace": "TR-003",
+      "alias": "te er zero zero trzy",
+      "case_sensitive": true,
+      "word_boundaries": true
+    },
+    {
+      "type": "alias",
+      "string_to_replace": "TR-004",
+      "alias": "te er zero zero cztery",
+      "case_sensitive": true,
+      "word_boundaries": true
+    },
+    {
+      "type": "alias",
+      "string_to_replace": "AG-007",
+      "alias": "a gie zero zero siedem",
+      "case_sensitive": true,
+      "word_boundaries": true
+    },
+    {
+      "type": "alias",
+      "string_to_replace": "FOGO",
+      "alias": "Fogo",
+      "case_sensitive": true,
+      "word_boundaries": true
+    },
+    {
+      "type": "alias",
+      "string_to_replace": "MAGNA3",
+      "alias": "Magna trzy",
+      "case_sensitive": true,
+      "word_boundaries": true
+    },
+    {
+      "type": "alias",
+      "string_to_replace": "FV 15540 ER",
+      "alias": "ef fał piętnaście pięćset czterdzieści e er",
+      "case_sensitive": true,
+      "word_boundaries": true
+    },
+    {
+      "type": "alias",
+      "string_to_replace": "FV 10001 ER",
+      "alias": "ef fał dziesięć tysięcy jeden e er",
+      "case_sensitive": true,
+      "word_boundaries": true
+    },
+    {
+      "type": "alias",
+      "string_to_replace": "BWKA 3",
+      "alias": "be wu ka a trzy",
+      "case_sensitive": true,
+      "word_boundaries": true
+    },
+    {
+      "type": "alias",
+      "string_to_replace": "TNOSN",
+      "alias": "te en o es en",
+      "case_sensitive": true,
+      "word_boundaries": true
+    },
+    {
+      "type": "alias",
+      "string_to_replace": "DTR",
+      "alias": "de te er",
+      "case_sensitive": true,
+      "word_boundaries": true
+    },
+    {
+      "type": "alias",
+      "string_to_replace": "kVA",
+      "alias": "kilowoltoamperów",
+      "case_sensitive": true,
+      "word_boundaries": true
+    },
+    {
+      "type": "alias",
+      "string_to_replace": "IP44",
+      "alias": "i pe czterdzieści cztery",
+      "case_sensitive": true,
+      "word_boundaries": true
+    },
+    {
+      "type": "alias",
+      "string_to_replace": "IP67",
+      "alias": "i pe sześćdziesiąt siedem",
+      "case_sensitive": true,
+      "word_boundaries": true
+    },
+    {
+      "type": "alias",
+      "string_to_replace": "CWU",
+      "alias": "ciepła woda użytkowa",
+      "case_sensitive": true,
+      "word_boundaries": true
+    },
+    {
+      "type": "alias",
+      "string_to_replace": "SN/nN",
+      "alias": "średnie i niskie napięcie",
+      "case_sensitive": true,
+      "word_boundaries": true
+    }
+  ]
+}

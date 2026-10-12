@@ -130,6 +130,17 @@ głos `eleven_flash_v2_5`, polski). Tab kierownika bez zmian.
 - **Tab jest domyślnie ukryty** (jakość głosu jeszcze nie na pokaz). Włącza go
   parametr `?voice` w adresie, np. `/?voice#voice`. Parametr przetrwa
   logowanie hasłem (strona logowania zwraca na adres z `next`).
+- Głos: **Paweł – Calm & Friendly** (natywny polski, `OQ6Jou0A0zdrPfupfXh4`,
+  dodany do „My Voices”), model `eleven_multilingual_v2`, `stability` 0.7.
+  Słownik wymowy `agent_configs/pronunciation-pl.json` (ID urządzeń, modele,
+  skróty) — podpięty do agenta; prompt zabrania czytania numerów części i
+  zgłoszeń na głos (są na ekranie).
+- **CLI `elevenlabs` uruchomione w `demos/axians/` używa klucza z `.env`, a nie
+  logowania OAuth.** Klucz z `.env` ma tylko uprawnienia do agentów i STT —
+  operacje na głosach i słownikach wymowy rób z innego katalogu (OAuth), np.
+  `cd /tmp && elevenlabs pronunciation-dictionaries create_from_rules …`.
+  Przy zmianie reguł słownika: utwórz nowy słownik przez CLI i wpisz jego ID
+  w `data/voice-agent.json`, potem `npm run voice:push`.
 - Nie używaj `--dry-run` CLI `elevenlabs` do zapisu — w wersji 1.4.0 mimo
   flagi wysyła żądanie. Pliki `agents.json` / `tools.json` / `tests.json` to
   pusty szkielet z `elevenlabs agents init`; push idzie przez nasz skrypt.
