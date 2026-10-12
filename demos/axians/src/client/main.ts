@@ -5,10 +5,6 @@ import { mountKierownik } from "./kierownik.ts";
 
 const views = { technik: $("#technik"), voice: $("#voice"), kierownik: $("#kierownik") };
 
-// The voice-agent tab is experimental: hidden unless the URL has ?voice (e.g. /?voice#voice).
-const voiceEnabled = new URLSearchParams(location.search).has("voice");
-if (!voiceEnabled) document.querySelector('[data-tab="voice"]')?.remove();
-
 // The voice tab pulls in the WebRTC SDK — load it only when first opened.
 let voiceMounted = false;
 function mountVoiceOnce() {
@@ -18,7 +14,6 @@ function mountVoiceOnce() {
 }
 
 function show(tab: keyof typeof views) {
-  if (tab === "voice" && !voiceEnabled) tab = "technik";
   if (tab === "voice") mountVoiceOnce();
   for (const [name, el] of Object.entries(views)) el.hidden = name !== tab;
   document.querySelectorAll<HTMLButtonElement>("[data-tab]").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.tab === tab)));

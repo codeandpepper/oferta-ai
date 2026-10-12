@@ -299,7 +299,8 @@ export async function mountVoice(root: HTMLElement) {
   root.replaceChildren(
     h("div", { class: "voice-layout" },
       h("div", { class: "card voice-call" },
-        h("h2", {}, "🎙 Rozmowa z agentem"),
+        h("h2", {}, "🎙 Rozmowa z agentem", h("span", { class: "beta-badge" }, "beta")),
+        h("div", { class: "beta-note" }, "⚠ Funkcja eksperymentalna — nie w pełni przetestowana. Jakość rozpoznawania i wymowy po polsku może się różnić; na demo najlepiej słuchawki."),
         hint("Ten sam proces co w zakładce „Technik”, ale prowadzony w całości głosem: technik mówi, agent dopytuje, sam sięga do wiedzy serwisowej i wypełnia protokół. Ręce zostają wolne.",
           "Agent głosowy rozumie potoczną polszczyznę, sam decyduje, kiedy użyć którego narzędzia, a wyniki pokazuje na ekranie obok. To drugie doświadczenie zbudowane na tej samej warstwie wiedzy."),
         h("div", { class: "row" }, startBtn, statusPill, muteBtn),

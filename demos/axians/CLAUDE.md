@@ -127,9 +127,8 @@ głos `eleven_flash_v2_5`, polski). Tab kierownika bez zmian.
   dostaje krótkotrwały token z `GET /api/voice/token`.
 - Zdjęcie tabliczki w tym tabie trafia do agenta jako wiadomość
   „[Zdjęcie tabliczki] …”.
-- **Tab jest domyślnie ukryty** (jakość głosu jeszcze nie na pokaz). Włącza go
-  parametr `?voice` w adresie, np. `/?voice#voice`. Parametr przetrwa
-  logowanie hasłem (strona logowania zwraca na adres z `next`).
+- Tab jest **zawsze widoczny**, ale oznaczony w menu jako „beta · nie w pełni
+  przetestowane” (+ ostrzeżenie w samym tabie). Link prosto do taba: `/#voice`.
 - Głos: **Paweł – Calm & Friendly** (natywny polski, `OQ6Jou0A0zdrPfupfXh4`,
   dodany do „My Voices”), model `eleven_multilingual_v2`, `stability` 0.7.
   Słownik wymowy `agent_configs/pronunciation-pl.json` (ID urządzeń, modele,
