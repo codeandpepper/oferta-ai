@@ -125,3 +125,23 @@ body.hints-off .hint { display: none; }
 .plate-params { display: flex; flex-wrap: wrap; gap: 4px 8px; font-size: 13px; }
 .param { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1px 8px; }
 .small { font-size: 13px; }
+.weather-reason { font-size: 13.5px; }
+.weather-step { color: var(--k-weather) !important; }
+.weather-settings { font-size: 13px; }
+.weather-card .source { font-size: 11px; }
+
+/* voice agent tab */
+.voice-layout { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: minmax(320px, 420px) 1fr; gap: 14px; align-items: start; }
+.voice-call { position: sticky; top: 70px; }
+.voice-screen { display: grid; gap: 14px; min-width: 0; }
+.big-mic { margin-left: 0 !important; padding: 12px 18px; font-size: 16px; border-radius: 999px; }
+.status-pill { font-size: 13px; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); }
+.status-pill[data-state="speaking"] { color: var(--accent); border-color: var(--accent); }
+.status-pill[data-state="listening"] { color: var(--ok); border-color: var(--ok); }
+.status-pill[data-state="error"] { color: var(--err); border-color: var(--err); }
+.transcript { display: flex; flex-direction: column; gap: 6px; min-height: 220px; max-height: 52vh; overflow-y: auto; padding: 8px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; }
+.bubble { max-width: 88%; padding: 7px 11px; border-radius: 12px; font-size: 14px; line-height: 1.4; }
+.bubble.agent { align-self: flex-start; background: var(--surface); border: 1px solid var(--border); }
+.bubble.user { align-self: flex-end; background: var(--accent); color: var(--accent-ink); }
+.bubble.tool { align-self: center; max-width: 100%; font-size: 12px; color: var(--muted); background: transparent; padding: 2px 6px; }
+@media (max-width: 860px) { .voice-layout { grid-template-columns: 1fr; } .voice-call { position: static; } }

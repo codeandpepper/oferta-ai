@@ -3,9 +3,23 @@ import { $ } from "./dom.ts";
 import { mountTechnik } from "./technik.ts";
 import { mountKierownik } from "./kierownik.ts";
 
-const views = { technik: $("#technik"), kierownik: $("#kierownik") };
+const views = { technik: $("#technik"), voice: $("#voice"), kierownik: $("#kierownik") };
+
+// The voice-agent tab is experimental: hidden unless the URL has ?voice (e.g. /?voice#voice).
+const voiceEnabled = new URLSearchParams(location.search).has("voice");
+if (!voiceEnabled) document.querySelector('[data-tab="voice"]')?.remove();
+
+// The voice tab pulls in the WebRTC SDK — load it only when first opened.
+let voiceMounted = false;
+function mountVoiceOnce() {
+  if (voiceMounted) return;
+  voiceMounted = true;
+  import("./voice.ts").then((m) => m.mountVoice(views.voice));
+}
 
 function show(tab: keyof typeof views) {
+  if (tab === "voice" && !voiceEnabled) tab = "technik";
+  if (tab === "voice") mountVoiceOnce();
   for (const [name, el] of Object.entries(views)) el.hidden = name !== tab;
   document.querySelectorAll<HTMLButtonElement>("[data-tab]").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.tab === tab)));
   try { localStorage.setItem("tab", tab); } catch { /* storage unavailable */ }
@@ -30,4 +44,7 @@ $("#reset").addEventListener("click", async () => {
 
 mountTechnik(views.technik);
 mountKierownik(views.kierownik);
-try { const t = localStorage.getItem("tab"); if (t === "kierownik") show(t); } catch { /* ignore */ }
+// #technik / #voice / #kierownik in the URL wins over the remembered tab (handy for demo links)
+const fromHash = location.hash.slice(1);
+if (fromHash in views) show(fromHash as keyof typeof views);
+else try { const t = localStorage.getItem("tab"); if (t === "kierownik" || t === "voice") show(t); } catch { /* ignore */ }

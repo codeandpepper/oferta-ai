@@ -1,0 +1,22 @@
+{
+  "type": "client",
+  "name": "find_device",
+  "description": "Szuka urządzenia w ewidencji po opisie technika (ID, typ, producent, model, klient, lokalizacja). Użyj, gdy technik mówi, przy jakim urządzeniu jest, zamiast robić zdjęcie tabliczki.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string",
+        "description": "Opis urządzenia słowami technika, np. „agregat w kotłowni K-2 w Borówcu” albo „AG-003”"
+      }
+    },
+    "required": [
+      "query"
+    ]
+  },
+  "expects_response": true,
+  "response_timeout_secs": 10,
+  "pre_tool_speech": "off",
+  "interruption_mode": "allow",
+  "execution_mode": "immediate"
+}

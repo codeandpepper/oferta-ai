@@ -108,7 +108,31 @@ Uzasadnienie i źródła: `docs/2026-10-07-axians-demo-stack-research.md`.
 | Wyszukiwanie w tekście | Własny `src/server/search.ts`: TF-IDF na trigramach znakowych + normalizacja (bez ogonków, rozwijanie skrótów techników) | **Bez embeddingów.** Test 2026-10-07: `multilingual-e5-small` źle rankował notatki i zajmował ~925 MB RAM. Część „semantyczną” robi Claude: pisze zapytanie z synonimami/skrótami i ocenia kandydatów. Jakość sprawdza `npm run eval:retrieval` |
 | PDF (DTR) | `unpdf`, tylko w skrypcie offline | Chunki z numerem strony liczone raz i commitowane jako JSON; PDF-y serwowane statycznie, a cytat linkuje do `plik.pdf#page=N` |
 | Wykresy | Chart.js | Persona kierownika |
-| Pogoda | Open-Meteo (bez klucza, CC BY 4.0 — atrybucja w UI) | `src/server/sources/weather.ts`: 7 dni dla współrzędnych urządzenia (`lat`/`lon` w `devices.json`) albo GPS przeglądarki. **Tryb demo** zwraca zapisany deszczowy tydzień (przewidywalny pokaz). Narzędzie `get_weather` — AI zawsze je wywołuje i daje pogodę jako pierwszą sekcję |
+| Pogoda | Open-Meteo (bez klucza, CC BY 4.0 — atrybucja w UI) | `src/server/sources/weather.ts`: 7 dni dla współrzędnych urządzenia (`lat`/`lon` w `devices.json`) albo GPS przeglądarki. **Tryb demo** zwraca zapisany deszczowy tydzień (przewidywalny pokaz). Narzędzie `get_weather` — AI wywołuje je **tylko gdy uzna, że pogoda może mieć związek z usterką** (z podaniem powodu); wtedy karta pogody pojawia się w odpowiedzi, a pogoda jest pierwszą sekcją. Ustawienia (GPS, tryb demo) są w kroku 2 |
+
+### Tab „Technik — voice agent” (ElevenLabs Agents)
+
+Drugie doświadczenie na tej samej warstwie wiedzy: cały przepływ technika
+prowadzony głosem przez agenta ElevenLabs (LLM agenta: `claude-sonnet-5-5`,
+głos `eleven_flash_v2_5`, polski). Tab kierownika bez zmian.
+
+- Konfiguracja jako pliki: `agent_configs/technik-voice.json` (prompt, głos,
+  ASR) i `tool_configs/*.json` — 5 **client tools** wykonywanych w
+  przeglądarce (`src/client/voice.ts`), które wołają nasze API:
+  `find_device`, `select_device`, `search_service_knowledge` (→ `/api/ask`
+  z `fast: true`, model `CLAUDE_FAST_MODEL`), `draft_protocol`, `save_ticket`.
+- Wypchnięcie do ElevenLabs: `npm run voice:push` (idempotentne; ID w
+  `data/voice-agent.json`). Wymaga `ELEVENLABS_API_KEY` z uprawnieniem
+  **Agents: write** (`convai_write`). Agent jest prywatny — przeglądarka
+  dostaje krótkotrwały token z `GET /api/voice/token`.
+- Zdjęcie tabliczki w tym tabie trafia do agenta jako wiadomość
+  „[Zdjęcie tabliczki] …”.
+- **Tab jest domyślnie ukryty** (jakość głosu jeszcze nie na pokaz). Włącza go
+  parametr `?voice` w adresie, np. `/?voice#voice`. Parametr przetrwa
+  logowanie hasłem (strona logowania zwraca na adres z `next`).
+- Nie używaj `--dry-run` CLI `elevenlabs` do zapisu — w wersji 1.4.0 mimo
+  flagi wysyła żądanie. Pliki `agents.json` / `tools.json` / `tests.json` to
+  pusty szkielet z `elevenlabs agents init`; push idzie przez nasz skrypt.
 
 ### Architektura w kodzie
 

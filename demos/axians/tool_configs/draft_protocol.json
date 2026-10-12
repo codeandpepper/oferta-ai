@@ -1,0 +1,24 @@
+{
+  "type": "client",
+  "name": "draft_protocol",
+  "description": "Tworzy protokół zamknięcia zlecenia z tego, co technik powiedział o wykonanej pracy. Zwraca protokół i listę brakujących wymaganych informacji. Gdy technik doda brakujące informacje, wywołaj ponownie z pełną, połączoną notatką.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "note": {
+        "type": "string",
+        "description": "Pełna notatka technika: co było nie tak, przyczyna, co zrobił, jakie części, ile trwało, wynik testu, kolejny przegląd"
+      }
+    },
+    "required": [
+      "note"
+    ]
+  },
+  "expects_response": true,
+  "response_timeout_secs": 60,
+  "pre_tool_speech": "auto",
+  "interruption_mode": "allow",
+  "execution_mode": "immediate",
+  "tool_call_sound": "typing",
+  "tool_call_sound_behavior": "always"
+}

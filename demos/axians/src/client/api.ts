@@ -15,7 +15,7 @@ export interface Ticket { id: string; deviceId: string; openedAt: string; catego
 export interface Ref { kind: "zgloszenie" | "dokumentacja" | "czesc" | "pogoda"; id: string; label: string; url?: string; detail: string; isNew?: boolean }
 export interface Answer { summary: string; sections: { kind: "pogoda" | "historia_typ" | "historia_egzemplarz" | "dokumentacja" | "czesci"; title: string; text: string; refs: string[] }[]; steps: string[] }
 export type AskEvent =
-  | { type: "tool"; name: string; label: string; input: unknown; resultCount: number }
+  | { type: "tool"; name: string; label: string; input: unknown; resultCount: number; data?: unknown }
   | { type: "answer"; answer: Answer; refs: Record<string, Ref> }
   | { type: "error"; message: string };
 export interface Protocol { symptom: string; category: string; cause: string; actions: string[]; partsUsed: { partNo: string | null; name: string; qty: number }[]; repairMinutes: number; priority: string; recommendations: string[]; nextServiceAt: string | null; missing: string[] }
@@ -56,8 +56,8 @@ export const api = {
   reset: () => post("/api/reset", {}).then((r) => json<{ tickets: number }>(r)),
 
   /** Server-sent events over a POST body. */
-  async *ask(deviceId: string, question: string, weather?: WeatherOpts): AsyncGenerator<AskEvent> {
-    const res = await post("/api/ask", { deviceId, question, weather });
+  async *ask(deviceId: string, question: string, weather?: WeatherOpts, fast = false): AsyncGenerator<AskEvent> {
+    const res = await post("/api/ask", { deviceId, question, weather, fast });
     if (res.status === 401) location.href = "/login";
     if (!res.ok || !res.body) throw new Error(`HTTP ${res.status}`);
     const reader = res.body.pipeThrough(new TextDecoderStream()).getReader();

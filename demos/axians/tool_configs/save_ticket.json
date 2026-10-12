@@ -1,0 +1,15 @@
+{
+  "type": "client",
+  "name": "save_ticket",
+  "description": "Zapisuje bieżący protokół jako nowe zgłoszenie serwisowe w systemie. Wywołuj dopiero po wyraźnym potwierdzeniu technika.",
+  "parameters": {
+    "type": "object",
+    "properties": {},
+    "required": []
+  },
+  "expects_response": true,
+  "response_timeout_secs": 20,
+  "pre_tool_speech": "off",
+  "interruption_mode": "allow",
+  "execution_mode": "immediate"
+}

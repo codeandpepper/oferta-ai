@@ -1,0 +1,24 @@
+{
+  "type": "client",
+  "name": "search_service_knowledge",
+  "description": "Szuka odpowiedzi w wiedzy serwisowej firmy dla wybranego urządzenia: historia zgłoszeń (podobne przypadki i ten egzemplarz), dokumentacja producenta, katalog części, w razie potrzeby pogoda. Trwa 20-40 sekund. Wynik pokazuje się technikowi na ekranie.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "question": {
+        "type": "string",
+        "description": "Opis problemu własnymi słowami technika, z objawami i okolicznościami (np. pogoda)"
+      }
+    },
+    "required": [
+      "question"
+    ]
+  },
+  "expects_response": true,
+  "response_timeout_secs": 120,
+  "pre_tool_speech": "force",
+  "interruption_mode": "allow",
+  "execution_mode": "immediate",
+  "tool_call_sound": "typing",
+  "tool_call_sound_behavior": "always"
+}

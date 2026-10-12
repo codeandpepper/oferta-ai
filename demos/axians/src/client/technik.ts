@@ -22,7 +22,7 @@ const SAMPLE_NOTES: { label: string; text: string }[] = [
 ];
 
 /** Phone photos are often > 5 MB (API image limit) — downscale in the browser first, honouring EXIF rotation. */
-async function shrink(image: Blob, maxSide = 2000): Promise<Blob> {
+export async function shrink(image: Blob, maxSide = 2000): Promise<Blob> {
   const bmp = await createImageBitmap(image, { imageOrientation: "from-image" });
   const scale = Math.min(1, maxSide / Math.max(bmp.width, bmp.height));
   if (scale === 1 && image.size < 4_000_000) return image;
@@ -33,7 +33,7 @@ async function shrink(image: Blob, maxSide = 2000): Promise<Blob> {
   return new Promise((res) => canvas.toBlob((b) => res(b!), "image/jpeg", 0.88));
 }
 
-function renderPlate(p: Plate, device: Device | null, matchedBy: string | null) {
+export function renderPlate(p: Plate, device: Device | null, matchedBy: string | null) {
   const title = [p.manufacturer, p.model].filter(Boolean).join(" ") || "Nieczytelne";
   return h("div", { class: "plate-read" },
     h("div", { class: "plate-title" }, h("strong", {}, title), p.deviceKind ? h("span", { class: "muted" }, ` · ${p.deviceKind}`) : null),
@@ -55,71 +55,64 @@ const KIND: Record<Answer["sections"][number]["kind"], { label: string; cls: str
   czesci: { label: "Katalog części", cls: "k-parts", how: "Dodatkowe źródło: numery części, zamienniki, stany. Pokazuje, że kolejne źródła dokłada się bez przebudowy." },
 };
 
+export function renderWeather(w: Weather, reason: string) {
+  const s = w.summary;
+  const maxP = Math.max(5, ...w.days.map((d) => d.precipitationMm));
+  return h("div", { class: "weather-card" },
+    h("div", { class: "weather-head" },
+      h("strong", {}, "🌦 Warunki — ostatnie 7 dni"),
+      h("span", { class: "muted" }, ` · ${w.label}`),
+      w.demo ? h("span", { class: "demo-badge" }, "DEMO") : null,
+    ),
+    reason ? h("div", { class: "weather-reason" }, h("span", { class: "ai-tag" }, "AI"), `Sprawdzono, bo: ${reason}`) : null,
+    hint("Asystent sam ocenił, że przy tej usterce warto sprawdzić pogodę z ostatniego tygodnia w miejscu urządzenia — nikt go o to nie prosił.",
+      "Wnioskowanie: warunki (opady, wilgoć, mróz, upał) zestawione z historią awarii wzmacniają lub osłabiają hipotezy, np. deszcz → woda w paliwie."),
+    h("div", { class: "weather-stats" },
+      stat("Opady", `${s.precipitationMm} mm`, `${s.rainyDays} dni z deszczem`),
+      stat("Temperatura", `${s.tMin}…${s.tMax} °C`, s.frostDays ? `${s.frostDays} dni z mrozem` : "bez mrozu"),
+      stat("Wilgotność", `${s.avgHumidity}%`, "średnio"),
+      stat("Wiatr", `${s.maxGustKmh} km/h`, "max porywy"),
+    ),
+    h("div", { class: "rain-bars", "aria-label": "Opady dzienne" },
+      ...w.days.map((d) => h("div", { class: "rain-day", title: `${d.date}: ${d.precipitationMm} mm, ${d.tMin}…${d.tMax} °C` },
+        h("div", { class: "rain-bar", style: `height:${Math.max(2, (d.precipitationMm / maxP) * 100)}%` }),
+        h("span", {}, new Date(d.date).toLocaleDateString("pl-PL", { weekday: "short" })),
+      )),
+    ),
+    h("div", { class: "muted source" }, w.source),
+  );
+}
+const stat = (k: string, v: string, sub: string) => h("div", { class: "stat" }, h("span", { class: "k" }, k), h("strong", {}, v), h("span", { class: "muted" }, sub));
+
 export async function mountTechnik(root: HTMLElement) {
   const devices = await api.devices();
   let device: Device | null = null;
   let lastQuestion = "";
   let lastAnswer: Answer | null = null;
 
-  // ---- weather: device location by default, optional GPS, demo mode for a predictable live show
+  // ---- weather: fetched by the AI during the analysis only when it judges weather relevant.
+  // Settings: device location by default, optional GPS, demo mode for a predictable live show.
   let gps: { lat: number; lon: number } | null = null;
   let demoWeather = false;
   try { demoWeather = localStorage.getItem("demoWeather") === "1"; } catch { /* storage unavailable */ }
   const weatherOpts = (): WeatherOpts => (gps ? { ...gps, label: "Twoja lokalizacja (GPS)", demo: demoWeather } : { demo: demoWeather });
-  const weatherBox = h("div", { class: "weather" });
 
-  async function loadWeather() {
-    if (!device) return;
-    weatherBox.replaceChildren(h("div", { class: "working" }, "Pobieram pogodę z ostatnich 7 dni…"));
-    try {
-      weatherBox.replaceChildren(renderWeather(await api.weather(device.id, weatherOpts())));
-    } catch (e) {
-      weatherBox.replaceChildren(errorBox(e));
-    }
-  }
-
-  function renderWeather(w: Weather) {
-    const s = w.summary;
-    const maxP = Math.max(5, ...w.days.map((d) => d.precipitationMm));
-    const gpsBtn = h("button", { type: "button", class: "chip", title: "Pogoda dla miejsca, w którym jesteś (zgoda przeglądarki)" }, gps ? "📍 Lokalizacja urządzenia" : "📍 Moja lokalizacja");
-    gpsBtn.addEventListener("click", () => {
-      if (gps) { gps = null; loadWeather(); return; }
-      navigator.geolocation.getCurrentPosition(
-        (p) => { gps = { lat: p.coords.latitude, lon: p.coords.longitude }; loadWeather(); },
-        (e) => weatherBox.append(errorBox(`Brak dostępu do lokalizacji: ${e.message}`)),
-        { timeout: 10000 },
-      );
-    });
-    const demoToggle = h("label", { class: "toggle", title: "Zapisany deszczowy tydzień — przewidywalny przebieg pokazu" }, h("input", { type: "checkbox", checked: demoWeather }), "Tryb demo");
-    demoToggle.querySelector("input")!.addEventListener("change", (e) => {
-      demoWeather = (e.target as HTMLInputElement).checked;
-      try { localStorage.setItem("demoWeather", demoWeather ? "1" : "0"); } catch { /* ignore */ }
-      loadWeather();
-    });
-    return h("div", { class: "weather-card" },
-      h("div", { class: "weather-head" },
-        h("strong", {}, "🌦 Warunki — ostatnie 7 dni"),
-        h("span", { class: "muted" }, ` · ${w.label}`),
-        w.demo ? h("span", { class: "demo-badge" }, "DEMO") : null,
-      ),
-      hint("System sam pobiera pogodę z ostatniego tygodnia dla miejsca, w którym stoi urządzenie.",
-        "AI zestawia warunki z historią awarii — np. opady i wysoka wilgotność wzmacniają hipotezę o wodzie w paliwie, mróz o problemach z akumulatorem."),
-      h("div", { class: "weather-stats" },
-        stat("Opady", `${s.precipitationMm} mm`, `${s.rainyDays} dni z deszczem`),
-        stat("Temperatura", `${s.tMin}…${s.tMax} °C`, s.frostDays ? `${s.frostDays} dni z mrozem` : "bez mrozu"),
-        stat("Wilgotność", `${s.avgHumidity}%`, "średnio"),
-        stat("Wiatr", `${s.maxGustKmh} km/h`, "max porywy"),
-      ),
-      h("div", { class: "rain-bars", "aria-label": "Opady dzienne" },
-        ...w.days.map((d) => h("div", { class: "rain-day", title: `${d.date}: ${d.precipitationMm} mm, ${d.tMin}…${d.tMax} °C` },
-          h("div", { class: "rain-bar", style: `height:${Math.max(2, (d.precipitationMm / maxP) * 100)}%` }),
-          h("span", {}, new Date(d.date).toLocaleDateString("pl-PL", { weekday: "short" })),
-        )),
-      ),
-      h("div", { class: "row wrap weather-actions" }, gpsBtn, demoToggle, h("span", { class: "muted source" }, w.source)),
+  const gpsBtn = h("button", { type: "button", class: "chip", title: "Pogoda dla miejsca, w którym jesteś (zgoda przeglądarki)" }, "📍 Moja lokalizacja");
+  gpsBtn.addEventListener("click", () => {
+    if (gps) { gps = null; gpsBtn.textContent = "📍 Moja lokalizacja"; return; }
+    navigator.geolocation.getCurrentPosition(
+      (p) => { gps = { lat: p.coords.latitude, lon: p.coords.longitude }; gpsBtn.textContent = "📍 Lokalizacja: GPS ✓ (kliknij, by wrócić do urządzenia)"; },
+      (e) => answerBox.replaceChildren(errorBox(`Brak dostępu do lokalizacji: ${e.message}`)),
+      { timeout: 10000 },
     );
-  }
-  const stat = (k: string, v: string, sub: string) => h("div", { class: "stat" }, h("span", { class: "k" }, k), h("strong", {}, v), h("span", { class: "muted" }, sub));
+  });
+  const demoToggle = h("label", { class: "toggle", title: "Zapisany deszczowy tydzień — przewidywalny przebieg pokazu" }, h("input", { type: "checkbox", checked: demoWeather }), "Tryb demo");
+  demoToggle.querySelector("input")!.addEventListener("change", (e) => {
+    demoWeather = (e.target as HTMLInputElement).checked;
+    try { localStorage.setItem("demoWeather", demoWeather ? "1" : "0"); } catch { /* ignore */ }
+  });
+  const weatherSettings = h("div", { class: "row wrap weather-settings" }, h("span", { class: "muted small-label" }, "🌦 Pogoda (gdy AI uzna ją za istotną):"), gpsBtn, demoToggle);
+
 
   // ---- step 1: device ---------------------------------------------------------
   const deviceInfo = h("div", { class: "device-info" });
@@ -152,8 +145,7 @@ export async function mountTechnik(root: HTMLElement) {
     device = d;
     problemCard.hidden = !d;
     closeCard.hidden = true;
-    if (!d) { deviceInfo.replaceChildren(); weatherBox.replaceChildren(); return; }
-    loadWeather();
+    if (!d) { deviceInfo.replaceChildren(); return; }
     const history = await api.deviceTickets(d.id);
     deviceInfo.replaceChildren(
       h("dl", { class: "kv" },
@@ -188,7 +180,6 @@ export async function mountTechnik(root: HTMLElement) {
     fileInput,
     select,
     deviceStatus,
-    weatherBox,
     deviceInfo,
   );
 
@@ -205,16 +196,25 @@ export async function mountTechnik(root: HTMLElement) {
     askBtn.disabled = true;
     progress.replaceChildren(h("li", { class: "working" }, "Analizuję pytanie i wybieram źródła…"));
     answerBox.replaceChildren();
+    let weather: { data: Weather; reason: string } | null = null;
     try {
       for await (const ev of api.ask(device.id, q, weatherOpts())) {
         if (ev.type === "tool") {
           progress.lastElementChild?.classList.contains("working") && progress.lastElementChild.remove();
-          progress.append(h("li", { class: "done" }, `✓ ${ev.label}`, h("span", { class: "muted" }, ` · ${ev.resultCount} wyn.`)));
+          if (ev.name === "get_weather") {
+            const reason = (ev.input as { reason?: string }).reason ?? "";
+            weather = { data: ev.data as Weather, reason };
+            progress.append(h("li", { class: "done weather-step" }, "🌦 AI sprawdza pogodę z ostatnich 7 dni", reason ? h("span", { class: "muted" }, ` — ${reason}`) : null));
+          } else {
+            progress.append(h("li", { class: "done" }, `✓ ${ev.label}`, h("span", { class: "muted" }, ` · ${ev.resultCount} wyn.`)));
+          }
           progress.append(h("li", { class: "working" }, "Szukam dalej…"));
         } else if (ev.type === "answer") {
           progress.querySelector(".working")?.remove();
           lastAnswer = ev.answer;
-          answerBox.replaceChildren(renderAnswer(ev.answer, ev.refs));
+          const el = renderAnswer(ev.answer, ev.refs);
+          if (weather) el.querySelector(".summary")!.after(renderWeather(weather.data, weather.reason));
+          answerBox.replaceChildren(el);
           closeCard.hidden = false;
         } else {
           progress.querySelector(".working")?.remove();
@@ -239,6 +239,7 @@ export async function mountTechnik(root: HTMLElement) {
       h("button", { type: "button", class: "chip", onclick: () => (question.value = SAMPLE_PROBLEM) }, "Przykład"),
       askBtn,
     ),
+    weatherSettings,
     progress,
     answerBox,
   );
@@ -338,7 +339,7 @@ export async function mountTechnik(root: HTMLElement) {
   root.replaceChildren(h("div", { class: "phone" }, deviceCard, problemCard, closeCard));
 }
 
-function renderAnswer(a: Answer, refs: Record<string, Ref>) {
+export function renderAnswer(a: Answer, refs: Record<string, Ref>) {
   const refChip = (id: string) => {
     const r = refs[id];
     if (!r) return null;

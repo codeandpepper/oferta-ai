@@ -10,7 +10,8 @@ import { identify } from "./flows/identify.ts";
 import { managerQuery } from "./flows/manager.ts";
 import { transcribe } from "./stt.ts";
 import { getWeather } from "./sources/weather.ts";
-import { RefusalError } from "./claude.ts";
+import { voiceToken } from "./voice.ts";
+import { RefusalError, FAST_MODEL } from "./claude.ts";
 import { passwordGate } from "./auth.ts";
 
 initStore();
@@ -44,6 +45,8 @@ app.get("/api/weather", async (c) => {
   return c.json(await getWeather({ lat, lon, label, demo: c.req.query("demo") === "1" }));
 });
 
+app.get("/api/voice/token", async (c) => c.json(await voiceToken()));
+
 app.post("/api/stt", async (c) => {
   const body = await c.req.parseBody();
   const file = body.audio;
@@ -61,10 +64,11 @@ app.post("/api/identify", async (c) => {
 });
 
 app.post("/api/ask", async (c) => {
-  const { deviceId, question, weather } = await c.req.json<{ deviceId: string; question: string; weather?: { lat?: number; lon?: number; label?: string; demo?: boolean } }>();
+  const { deviceId, question, weather, fast } = await c.req.json<{ deviceId: string; question: string; weather?: { lat?: number; lon?: number; label?: string; demo?: boolean }; fast?: boolean }>();
   return streamSSE(c, async (stream) => {
     try {
-      for await (const event of ask(deviceId, question, weather)) await stream.writeSSE({ data: JSON.stringify(event) });
+      // voice agent asks with fast=true: a quicker model keeps the spoken conversation fluid
+      for await (const event of ask(deviceId, question, weather, fast ? FAST_MODEL : undefined)) await stream.writeSSE({ data: JSON.stringify(event) });
     } catch (e) {
       console.error(e);
       await stream.writeSSE({ data: JSON.stringify({ type: "error", message: e instanceof Error ? e.message : String(e) }) });

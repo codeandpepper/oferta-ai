@@ -46,9 +46,9 @@ Zwykle użyj wszystkich źródeł, wywołując niezależne narzędzia równolegl
 3. device_history — historia tego konkretnego egzemplarza (ostatnie wizyty, uwagi techników, zalecenia).
 4. search_documentation — procedura / tabela usterek z dokumentacji producenta (jeśli urządzenie ma docId).
 5. search_parts — części i zamienniki, jeśli z historii lub dokumentacji wynika, że będą potrzebne.
-6. get_weather — pogoda z ostatnich 7 dni w miejscu urządzenia (opady, temperatury, wilgotność, porywy wiatru). Wywołaj zawsze.
+6. get_weather — pogoda z ostatnich 7 dni w miejscu urządzenia (opady, temperatury, wilgotność, porywy wiatru). Wywołaj TYLKO wtedy, gdy uznasz, że warunki atmosferyczne mogą mieć związek z tą usterką (np. wilgoć, opady, mróz, upał, wiatr, burza, kondensacja, przegrzanie, korozja) — także gdy wynika to z historii zgłoszeń, a nie tylko z relacji technika. W polu reason napisz krótko, dlaczego.
 
-Pogodę przedstaw jako pierwszą sekcję (kind "pogoda", refs ["pogoda-7d"]) i powiąż ją z problemem: czy warunki (opady, wilgoć, mróz, upał, wiatr) wzmacniają lub osłabiają hipotezy z historii zgłoszeń. Jeśli warunki nie pasują do relacji technika (np. nie padało), powiedz to wprost i uwzględnij w diagnozie.
+Jeśli pobrałeś pogodę, przedstaw ją jako pierwszą sekcję (kind "pogoda", refs ["pogoda-7d"]) i powiąż ją z problemem: czy warunki (opady, wilgoć, mróz, upał, wiatr) wzmacniają lub osłabiają hipotezy z historii zgłoszeń. Jeśli warunki nie pasują do relacji technika (np. nie padało), powiedz to wprost i uwzględnij w diagnozie. Jeśli pogody nie pobierałeś, nie twórz sekcji "pogoda".
 
 Zasady:
 - Opieraj się wyłącznie na wynikach narzędzi. Każda sekcja musi wskazywać ID źródeł w refs.
@@ -85,7 +85,7 @@ const TOOLS = {
   },
   get_weather: {
     label: "Pogoda — ostatnie 7 dni",
-    tool: zodTool("get_weather", "Pogoda dzienna z ostatnich 7 dni w miejscu, w którym jest urządzenie (lokalizacja ustalona przez aplikację).", z.strictObject({})),
+    tool: zodTool("get_weather", "Pogoda dzienna z ostatnich 7 dni w miejscu, w którym jest urządzenie (lokalizacja ustalona przez aplikację). Używaj, gdy warunki atmosferyczne mogą wyjaśniać usterkę.", z.strictObject({ reason: z.string().describe("jedno zdanie po polsku: dlaczego pogoda może mieć znaczenie dla tej usterki") })),
     run: (_: unknown, ctx: AskContext) => getWeather(ctx.weather),
   },
 } as const;
@@ -93,7 +93,7 @@ type AskContext = { weather: WeatherQuery };
 type ToolName = keyof typeof TOOLS;
 
 export type AskEvent =
-  | { type: "tool"; name: string; label: string; input: unknown; resultCount: number }
+  | { type: "tool"; name: string; label: string; input: unknown; resultCount: number; data?: unknown }
   | { type: "answer"; answer: Answer; refs: Record<string, Ref> }
   | { type: "error"; message: string };
 
@@ -139,7 +139,7 @@ function collectRefs(result: unknown, refs: Record<string, Ref>) {
   }
 }
 
-export async function* ask(deviceId: string, question: string, weather?: Partial<WeatherQuery>): AsyncGenerator<AskEvent> {
+export async function* ask(deviceId: string, question: string, weather?: Partial<WeatherQuery>, model?: string): AsyncGenerator<AskEvent> {
   const device = deviceById(deviceId);
   if (!device) {
     yield { type: "error", message: `Nieznane urządzenie ${deviceId}` };
@@ -168,6 +168,7 @@ Technik mówi: „${question}”`,
   for (let turn = 0; turn < 6; turn++) {
     const response = await client.beta.messages.parse({
       ...base,
+      ...(model ? { model } : {}),
       max_tokens: 16000,
       system: SYSTEM,
       tools: Object.values(TOOLS).map((t) => t.tool),
@@ -192,7 +193,8 @@ Technik mówi: „${question}”`,
           const result: unknown = await def.run(call.input as never, ctx);
           collectRefs(result, refs);
           const count = Array.isArray(result) ? result.length : (result as { total?: number }).total ?? 1;
-          yield { type: "tool", name: call.name, label: def.label, input: call.input, resultCount: count };
+          // weather result goes to the UI too — it renders the card only when the AI decided to check it
+          yield { type: "tool", name: call.name, label: def.label, input: call.input, resultCount: count, data: call.name === "get_weather" ? result : undefined };
           results.push({ type: "tool_result", tool_use_id: call.id, content: JSON.stringify(result) });
         } catch (e) {
           results.push({ type: "tool_result", tool_use_id: call.id, content: String(e), is_error: true });

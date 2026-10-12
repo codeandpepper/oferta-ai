@@ -1,0 +1,22 @@
+{
+  "type": "client",
+  "name": "select_device",
+  "description": "Ustawia urządzenie, przy którym jest technik (po ID z find_device lub z odczytu tabliczki). Zwraca dane urządzenia i ostatnie wpisy z jego historii.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "device_id": {
+        "type": "string",
+        "description": "ID urządzenia, np. AG-003"
+      }
+    },
+    "required": [
+      "device_id"
+    ]
+  },
+  "expects_response": true,
+  "response_timeout_secs": 10,
+  "pre_tool_speech": "off",
+  "interruption_mode": "allow",
+  "execution_mode": "immediate"
+}

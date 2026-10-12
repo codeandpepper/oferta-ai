@@ -6,7 +6,10 @@ import { getCookie, setCookie } from "hono/cookie";
 
 const COOKIE = "demo_auth";
 
-function page(error = false) {
+// Only same-site paths — never redirect to another host after login.
+const safeNext = (v: unknown) => (typeof v === "string" && v.startsWith("/") && !v.startsWith("//") ? v : "/");
+
+function page(error = false, next = "/") {
   return `<!doctype html><html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Wiedza serwisowa — demo</title><style>
 :root{--bg:#f3f4f6;--surface:#fff;--text:#15171a;--muted:#6b7280;--border:#e2e5ea;--accent:#0f62fe;--err:#c62828}
@@ -17,7 +20,7 @@ h1{margin:0;font-size:18px}h1 span{color:var(--accent)}p{margin:0;color:var(--mu
 input{font:inherit;padding:10px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text)}
 button{font:inherit;font-weight:600;padding:10px;border-radius:8px;border:0;background:var(--accent);color:#fff;cursor:pointer}
 .err{color:var(--err);font-size:14px}</style></head><body>
-<form method="post" action="/login"><h1><span>◆</span> Wiedza serwisowa</h1><p>Podaj hasło, aby otworzyć demo.</p>
+<form method="post" action="/login"><input type="hidden" name="next" value="${next.replace(/"/g, "&quot;")}"><h1><span>◆</span> Wiedza serwisowa</h1><p>Podaj hasło, aby otworzyć demo.</p>
 <input type="password" name="password" placeholder="Hasło" autofocus required autocomplete="current-password">
 ${error ? '<div class="err">Nieprawidłowe hasło.</div>' : ""}<button type="submit">Wejdź</button></form></body></html>`;
 }
@@ -28,16 +31,18 @@ export function passwordGate(app: Hono) {
   const token = createHash("sha256").update(`axians-demo:${password}`).digest("hex");
   const valid = (v: string | undefined) => !!v && v.length === token.length && timingSafeEqual(Buffer.from(v), Buffer.from(token));
 
-  app.get("/login", (c) => c.html(page()));
+  app.get("/login", (c) => c.html(page(false, safeNext(c.req.query("next")))));
   app.post("/login", async (c) => {
     const body = await c.req.parseBody();
-    if (body.password !== password) return c.html(page(true), 401);
+    const next = safeNext(body.next);
+    if (body.password !== password) return c.html(page(true, next), 401);
     setCookie(c, COOKIE, token, { httpOnly: true, secure: true, sameSite: "Lax", path: "/", maxAge: 60 * 60 * 24 * 30 });
-    return c.redirect("/");
+    return c.redirect(next);
   });
   app.use("*", async (c, next) => {
     if (valid(getCookie(c, COOKIE))) return next();
     if (c.req.path.startsWith("/api/")) return c.json({ error: "Sesja wygasła — odśwież stronę i podaj hasło." }, 401);
-    return c.redirect("/login");
+    const url = new URL(c.req.url);
+    return c.redirect(`/login?next=${encodeURIComponent(url.pathname + url.search)}`);
   });
 }

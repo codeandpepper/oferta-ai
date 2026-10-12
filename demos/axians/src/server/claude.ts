@@ -4,6 +4,8 @@ import { z } from "zod";
 
 export const client = new Anthropic();
 export const MODEL = process.env.CLAUDE_MODEL ?? "claude-opus-5-5";
+/** Used where latency matters more than depth (voice agent). */
+export const FAST_MODEL = process.env.CLAUDE_FAST_MODEL ?? "claude-sonnet-5-5";
 
 /**
  * Shared request options. Server-side refusal fallback is on by default

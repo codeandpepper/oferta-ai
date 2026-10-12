@@ -1,0 +1,10 @@
+{
+  "tools": {
+    "draft_protocol": "tool_5101m4qr1znjeys80p5htqkke4c8",
+    "find_device": "tool_3401m4qr1zx5eez851w2qsg14sn8",
+    "save_ticket": "tool_7201m4qr203ffjgskrdpzrrmtqff",
+    "search_service_knowledge": "tool_9701m4qr20a3f1wvw55f56m976ak",
+    "select_device": "tool_5701m4qr20gdfnsbyrnkh3pcbfw0"
+  },
+  "agentId": "agent_5701m4qr20pfesg9y5tyqn6pkdav"
+}
