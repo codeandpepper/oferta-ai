@@ -116,6 +116,13 @@ app.post("/api/reset", (c) => {
 });
 
 // Production: the built client (Vite copies public/ — incl. the PDF manuals — into dist/).
+// index.html must always be revalidated (otherwise browsers keep a stale page after a deploy);
+// hashed files in /assets/ never change, so they can be cached for good.
+app.use("/*", async (c, next) => {
+  await next();
+  if (c.req.path.startsWith("/api/")) return;
+  c.header("Cache-Control", c.req.path.startsWith("/assets/") ? "public, max-age=31536000, immutable" : "no-cache");
+});
 app.use("/*", serveStatic({ root: "./dist" }));
 
 const port = Number(process.env.PORT ?? 3000);
