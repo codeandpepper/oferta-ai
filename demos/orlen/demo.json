@@ -1,0 +1,7 @@
+{
+  "title": "Orlen — test (Python)",
+  "description": "Test demo w Pythonie: serwer HTTP zwracający „hello world”.",
+  "start": "python3 -u server.py",
+  "build": "python3 -m pip install --quiet --target .deps -r requirements.txt",
+  "check": "python3 -m py_compile server.py"
+}

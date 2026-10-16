@@ -1,0 +1,1 @@
+# Zależności tego demo (instalowane do .deps/ przy deployu; start z PYTHONPATH=.deps, jeśli są potrzebne).
