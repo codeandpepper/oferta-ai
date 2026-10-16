@@ -98,9 +98,9 @@ Uzasadnienie i źródła: `docs/2026-10-07-axians-demo-stack-research.md`.
 
 | Warstwa | Wybór | Uwagi |
 |---|---|---|
-| Runtime | Node.js 24.x + TypeScript, Heroku | `"engines": {"node": "24.x"}` w `package.json`, `Procfile`: `web: node src/server/index.ts` (Node 24 uruchamia TS bez kompilacji — tylko składnia „erasable”, importy z rozszerzeniem `.ts`) |
+| Runtime | Node.js 24.x + TypeScript, Heroku (wspólna apka demo, patrz `demos/CLAUDE.md`) | `"engines": {"node": "24.x"}` w `package.json`, start/build w `demo.json` (`node src/server/index.ts`). Node 24 uruchamia TS bez kompilacji — tylko składnia „erasable”, importy z rozszerzeniem `.ts` |
 | Serwer | Hono (`@hono/node-server`) | Lekki, ma natywny `parseBody` do uploadu audio i zdjęć bez multera |
-| Frontend | Jeden statyczny SPA: Vite `vanilla-ts`, bez frameworka | Serwowany przez ten sam serwer; build w `heroku-postbuild` |
+| Frontend | Jeden statyczny SPA: Vite `vanilla-ts`, bez frameworka | Serwowany przez ten sam serwer; build (`npm run build`) odpala gateway przy deployu. **URL-e w kliencie są względne** (`fetch("api/…")`, `base: "./"` w Vite), bo na Heroku demo działa pod `/axians/` |
 | Dane | **Pliki JSON, bez bazy** | `data/seed/*.json` wczytywane do pamięci przy starcie; nowe zgłoszenia w pamięci + dopisywane do `/tmp/tickets.runtime.json`. Zero natywnych zależności |
 | LLM | Claude (`@anthropic-ai/sdk`), model `claude-opus-5-5` (zmienna `CLAUDE_MODEL`) | Vision (tabliczka, usterka), tool use (orkiestracja źródeł), structured output (protokół), pytanie → spec zapytania w JSON (kierownik) |
 | Speech-to-text | ElevenLabs Scribe, `model_id: scribe_v2`, `language_code: pol` | `POST /v1/speech-to-text`, nagranie z przeglądarki przez `MediaRecorder` (webm/opus) wysyłamy bez konwersji |
@@ -128,7 +128,7 @@ głos `eleven_flash_v2_5`, polski). Tab kierownika bez zmian.
 - Zdjęcie tabliczki w tym tabie trafia do agenta jako wiadomość
   „[Zdjęcie tabliczki] …”.
 - Tab jest **zawsze widoczny**, ale oznaczony w menu jako „beta · nie w pełni
-  przetestowane” (+ ostrzeżenie w samym tabie). Link prosto do taba: `/#voice`.
+  przetestowane” (+ ostrzeżenie w samym tabie). Link prosto do taba: `/axians/#voice`.
 - Głos: **Paweł – Calm & Friendly** (natywny polski, `OQ6Jou0A0zdrPfupfXh4`,
   dodany do „My Voices”), model `eleven_multilingual_v2`, `stability` 0.7.
   Słownik wymowy `agent_configs/pronunciation-pl.json` (ID urządzeń, modele,
@@ -161,35 +161,32 @@ głos `eleven_flash_v2_5`, polski). Tab kierownika bez zmian.
 
 ### Heroku: na co uważać
 
-- **Filesystem jest efemeryczny.** Dyno restartuje się co najmniej raz
-  na dobę i każdy deploy czyści dane. Dlatego dane są **odtwarzane przy
-  starcie** z commitowanych plików seed (`data/seed/*.json`). Zgłoszenia dodane w trakcie demo żyją do restartu i to
-  wystarcza. Dodaj w UI przycisk „Reset demo” przywracający stan seed.
-- **Tylko jeden dyno `web`** (`heroku ps:scale web=1`). Każdy dyno ma
-  własną kopię danych w pamięci.
-- **Nie używaj dyno Eco**, bo usypia się i pierwszy request na spotkaniu
-  trwałby za długo. Basic wystarczy (bez lokalnego modelu aplikacja
-  zajmuje kilkadziesiąt MB RAM).
-- Mikrofon i aparat w przeglądarce wymagają HTTPS. Heroku daje go na
-  `*.herokuapp.com` od ręki.
-- Sekrety tylko w config vars: `ANTHROPIC_API_KEY`,
-  `ELEVENLABS_API_KEY`, `DEMO_PASSWORD`. Aplikacja jest za ekranem z samym
-  hasłem (`src/server/auth.ts`), bo URL jest publiczny.
-- Rozgrzewka: odpal aplikację 10 minut przed spotkaniem i przejdź cały
+Demo chodzi na wspólnej apce `codeandpepper-demos` pod `/axians/`. Ogólne
+zasady (gateway, deploy, zmienne z prefiksem `AXIANS_`, setup CLI i
+teamu) są w `demos/CLAUDE.md`. Tu tylko to, co dotyczy Axians:
+
+- **Filesystem jest efemeryczny.** Dane są **odtwarzane przy starcie** z
+  commitowanych plików seed (`data/seed/*.json`). Zgłoszenia dodane w
+  trakcie demo żyją do restartu procesu (deploy, restart dyno albo
+  uśpienie demo po 30 min bezczynności) i to wystarcza. Przycisk „Reset
+  demo” przywraca stan seed.
+- Sekrety w `.env` (lokalnie) → config vars `AXIANS_ANTHROPIC_API_KEY`,
+  `AXIANS_ELEVENLABS_API_KEY`, `AXIANS_CLAUDE_MODEL`,
+  `AXIANS_DEMO_PASSWORD`. Aplikacja jest za ekranem z samym hasłem
+  (`src/server/auth.ts`), bo URL jest publiczny.
+- Rozgrzewka: otwórz demo 10 minut przed spotkaniem i przejdź cały
   scenariusz raz.
 
-### Deploy na Heroku — jedna komenda
+### Deploy na Heroku
 
-`npm run deploy` (skrypt `scripts/deploy-heroku.sh`). Wymaga `heroku login`
-i kluczy w `.env`. Skrypt jest idempotentny — uruchamiaj po każdej zmianie:
-tworzy aplikację `cp-axians-demo` (EU) jeśli jej nie ma, przenosi klucze z
-`.env` do config vars (`DEMO_PASSWORD` domyślnie `axians`), sprawdza
-build, pakuje sam folder demo (bez `node_modules`, `dist`, `.env`) do
-tymczasowego repo i robi force push na Heroku — **niezależnie od commitów
-w głównym repo**. Ustawia 1 dyno `basic` (nie usypia się). Inna nazwa:
-`HEROKU_APP=nazwa npm run deploy`. Dostęp: ekran z samym hasłem
-(`DEMO_PASSWORD`, bez loginu), cookie ważne 30 dni; działa tylko na
-produkcji (`NODE_ENV=production`), lokalnie `npm run dev` jest bez hasła.
+W tym folderze `npm run deploy` (albo z `demos/`: `npm run deploy -- axians`),
+szczegóły w `demos/CLAUDE.md`. Wysyła tylko demo Axians (inne demo na apce
+zostają nietknięte), a klucze z `axians/.env` trafiają do config vars z
+prefiksem `AXIANS_`. Dostęp: ekran z samym hasłem
+(`DEMO_PASSWORD`, bez loginu), cookie ważne 30 dni (ograniczone do
+`/axians`). Działa tylko na produkcji (`NODE_ENV=production`), lokalnie
+`npm run dev` jest bez hasła. Stara osobna apka `cp-axians-demo` jest
+nieużywana.
 
 ### Skrypty offline (uruchamiane lokalnie, wynik commitowany)
 

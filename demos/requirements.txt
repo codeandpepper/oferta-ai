@@ -1,0 +1,2 @@
+# Triggers the heroku/python buildpack (it detects requirements.txt in the app root only).
+# Demo dependencies live in each demo: demos/<name>/requirements.txt → installed into demos/<name>/.deps.

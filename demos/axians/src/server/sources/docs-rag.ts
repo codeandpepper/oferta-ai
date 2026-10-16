@@ -12,5 +12,5 @@ export function searchDocs(input: z.infer<typeof docsInput>) {
   if (!doc) return [];
   return docIndex
     .search(input.query, 6, (c) => c.docId === doc.id)
-    .map((h) => ({ chunkId: h.item.id, docId: doc.id, title: doc.title, page: h.item.page, pageInfo: doc.pageHints?.[String(h.item.page)] ?? null, url: `${doc.file}#page=${h.item.page}`, text: h.item.text }));
+    .map((h) => ({ chunkId: h.item.id, docId: doc.id, title: doc.title, page: h.item.page, pageInfo: doc.pageHints?.[String(h.item.page)] ?? null, url: `${doc.file.replace(/^\//, "")}#page=${h.item.page}`, text: h.item.text }));
 }

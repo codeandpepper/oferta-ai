@@ -22,7 +22,7 @@ export interface Protocol { symptom: string; category: string; cause: string; ac
 export interface ManagerResult { query: unknown; chart: "bar" | "line" | "none"; title: string; valueLabel: string; rows: { label: string; value: number; tickets: number }[]; takeaway: string }
 
 async function json<T>(res: Response): Promise<T> {
-  if (res.status === 401) location.href = "/login";
+  if (res.status === 401) location.href = "login";
   const body = await res.json();
   if (!res.ok) throw new Error(body.error ?? res.statusText);
   return body as T;
@@ -30,35 +30,35 @@ async function json<T>(res: Response): Promise<T> {
 const post = (url: string, body: unknown) => fetch(url, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
 
 export const api = {
-  devices: () => fetch("/api/devices").then((r) => json<Device[]>(r)),
-  deviceTickets: (id: string) => fetch(`/api/devices/${id}/tickets`).then((r) => json<Ticket[]>(r)),
+  devices: () => fetch("api/devices").then((r) => json<Device[]>(r)),
+  deviceTickets: (id: string) => fetch(`api/devices/${id}/tickets`).then((r) => json<Ticket[]>(r)),
   stt: (audio: Blob) => {
     const form = new FormData();
     form.append("audio", audio, "nagranie.webm");
-    return fetch("/api/stt", { method: "POST", body: form }).then((r) => json<{ text: string }>(r));
+    return fetch("api/stt", { method: "POST", body: form }).then((r) => json<{ text: string }>(r));
   },
   identify: (image: Blob) => {
     const form = new FormData();
     form.append("image", image, image.type === "image/png" ? "tabliczka.png" : "tabliczka.jpg");
-    return fetch("/api/identify", { method: "POST", body: form }).then((r) =>
+    return fetch("api/identify", { method: "POST", body: form }).then((r) =>
       json<{ plate: Plate; device: Device | null; matchedBy: string | null }>(r),
     );
   },
-  protocol: (deviceId: string, note: string, context?: string) => post("/api/protocol", { deviceId, note, context }).then((r) => json<Protocol>(r)),
-  saveTicket: (deviceId: string, note: string, protocol: Protocol) => post("/api/tickets", { deviceId, note, protocol }).then((r) => json<Ticket>(r)),
+  protocol: (deviceId: string, note: string, context?: string) => post("api/protocol", { deviceId, note, context }).then((r) => json<Protocol>(r)),
+  saveTicket: (deviceId: string, note: string, protocol: Protocol) => post("api/tickets", { deviceId, note, protocol }).then((r) => json<Ticket>(r)),
   weather: (deviceId: string, o: WeatherOpts) => {
     const q = new URLSearchParams({ deviceId, demo: o.demo ? "1" : "0" });
     if (o.lat !== undefined && o.lon !== undefined) { q.set("lat", String(o.lat)); q.set("lon", String(o.lon)); }
     if (o.label) q.set("label", o.label);
-    return fetch(`/api/weather?${q}`).then((r) => json<Weather>(r));
+    return fetch(`api/weather?${q}`).then((r) => json<Weather>(r));
   },
-  manager: (question: string) => post("/api/manager", { question }).then((r) => json<ManagerResult>(r)),
-  reset: () => post("/api/reset", {}).then((r) => json<{ tickets: number }>(r)),
+  manager: (question: string) => post("api/manager", { question }).then((r) => json<ManagerResult>(r)),
+  reset: () => post("api/reset", {}).then((r) => json<{ tickets: number }>(r)),
 
   /** Server-sent events over a POST body. */
   async *ask(deviceId: string, question: string, weather?: WeatherOpts, fast = false): AsyncGenerator<AskEvent> {
-    const res = await post("/api/ask", { deviceId, question, weather, fast });
-    if (res.status === 401) location.href = "/login";
+    const res = await post("api/ask", { deviceId, question, weather, fast });
+    if (res.status === 401) location.href = "login";
     if (!res.ok || !res.body) throw new Error(`HTTP ${res.status}`);
     const reader = res.body.pipeThrough(new TextDecoderStream()).getReader();
     let buf = "";

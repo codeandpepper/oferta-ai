@@ -1,0 +1,7 @@
+{
+  "title": "Axians — Wiedza serwisowa",
+  "description": "Asystent technika i kierownika serwisu: historia zgłoszeń, DTR, części, głos.",
+  "start": "node src/server/index.ts",
+  "build": "npm ci --include=dev && npm run build",
+  "check": "npx tsc --noEmit && npx vite build"
+}

@@ -173,7 +173,7 @@ export async function mountTechnik(root: HTMLElement) {
         await identify(await samplePlate(demo));
       } }, "Przykładowa tabliczka"),
       h("button", { type: "button", class: "ghost", title: "Prawdziwe zdjęcie tabliczki starego agregatu — obrócone, słabo oświetlone, po niemiecku", onclick: async () => {
-        const res = await fetch("/samples/tabliczka_znamionowa_agregat.jpg");
+        const res = await fetch("samples/tabliczka_znamionowa_agregat.jpg");
         await identify(await res.blob());
       } }, "Zdjęcie z terenu"),
     ),

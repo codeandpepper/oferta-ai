@@ -1,0 +1,13 @@
+{
+  "name": "codeandpepper-demos",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "start": "node gateway/server.ts",
+    "build": "node gateway/build.ts",
+    "deploy": "bash scripts/deploy.sh"
+  }
+}

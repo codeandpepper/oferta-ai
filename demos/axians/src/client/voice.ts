@@ -80,7 +80,7 @@ export async function mountVoice(root: HTMLElement) {
     startBtn.disabled = true;
     setStatus("connecting");
     try {
-      const { token } = await fetch("/api/voice/token").then(async (r) => {
+      const { token } = await fetch("api/voice/token").then(async (r) => {
         const body = await r.json();
         if (!r.ok) throw new Error(body.error ?? r.statusText);
         return body as { token: string };
@@ -313,7 +313,7 @@ export async function mountVoice(root: HTMLElement) {
           h("h2", {}, "📱 Ekran technika"),
           h("div", { class: "row wrap" },
             h("button", { type: "button", onclick: () => fileInput.click() }, "📷 Zdjęcie tabliczki"),
-            h("button", { type: "button", class: "ghost", title: "Prawdziwe zdjęcie tabliczki starego agregatu", onclick: async () => identify(await (await fetch("/samples/tabliczka_znamionowa_agregat.jpg")).blob()) }, "Zdjęcie z terenu"),
+            h("button", { type: "button", class: "ghost", title: "Prawdziwe zdjęcie tabliczki starego agregatu", onclick: async () => identify(await (await fetch("samples/tabliczka_znamionowa_agregat.jpg")).blob()) }, "Zdjęcie z terenu"),
             h("button", { type: "button", class: "ghost", onclick: async () => identify(await samplePlate(devices.find((d) => d.id === "AG-003")!)) }, "Przykładowa tabliczka"),
             demoToggle,
           ),

@@ -20,7 +20,7 @@ h1{margin:0;font-size:18px}h1 span{color:var(--accent)}p{margin:0;color:var(--mu
 input{font:inherit;padding:10px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text)}
 button{font:inherit;font-weight:600;padding:10px;border-radius:8px;border:0;background:var(--accent);color:#fff;cursor:pointer}
 .err{color:var(--err);font-size:14px}</style></head><body>
-<form method="post" action="/login"><input type="hidden" name="next" value="${next.replace(/"/g, "&quot;")}"><h1><span>◆</span> Wiedza serwisowa</h1><p>Podaj hasło, aby otworzyć demo.</p>
+<form method="post" action="login"><input type="hidden" name="next" value="${next.replace(/"/g, "&quot;")}"><h1><span>◆</span> Wiedza serwisowa</h1><p>Podaj hasło, aby otworzyć demo.</p>
 <input type="password" name="password" placeholder="Hasło" autofocus required autocomplete="current-password">
 ${error ? '<div class="err">Nieprawidłowe hasło.</div>' : ""}<button type="submit">Wejdź</button></form></body></html>`;
 }
